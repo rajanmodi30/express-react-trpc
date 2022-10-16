@@ -5,6 +5,7 @@ import { Button } from "@mui/material";
 
 function App() {
   const [count, setCount] = useState(0);
+  console.log(import.meta.env.VITE_APP_NAME); // 123
 
   return (
     <div className="App">
