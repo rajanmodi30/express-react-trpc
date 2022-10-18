@@ -12,7 +12,7 @@ export class AuthController {
     );
 
     if (userExists) {
-      return res.status(400).send({
+      return res.status(200).send({
         status: false,
         message: req.t("user.user_already_exists"),
       });
@@ -41,7 +41,7 @@ export class AuthController {
     const user = await LoginService.login(email, password);
 
     if (user === null) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: false,
         message: req.t("user.wrong_email_or_password"),
       });

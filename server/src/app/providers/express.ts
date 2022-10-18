@@ -24,7 +24,7 @@ export class Express {
     const port = process.env.APP_PORT;
     this.app.use(
       cors({
-        origin: env.cors.urls,
+        origin: "*",
         methods: ["GET", "HEAD", "OPTIONS", "POST", "PUT", "DELETE"],
       })
     );
