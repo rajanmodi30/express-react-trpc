@@ -6,6 +6,7 @@ import { Users } from "./pages/Users";
 import { Admin } from "./layouts/Admin";
 import { Auth } from "./layouts/Auth";
 import { NotFound } from "./pages/NotFound";
+import { ForgotPassword } from "./pages/ForgotPassword";
 
 export const RouterConfig = () => {
   return useRoutes([
@@ -16,6 +17,10 @@ export const RouterConfig = () => {
         {
           index: true,
           element: <Login />,
+        },
+        {
+          path: "forgot-password",
+          element: <ForgotPassword />,
         },
       ],
     },
