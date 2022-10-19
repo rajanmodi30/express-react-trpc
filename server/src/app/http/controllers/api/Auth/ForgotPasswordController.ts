@@ -43,7 +43,7 @@ export class ForgotPasswordController {
       },
     });
 
-    const url = `${env.app.host}:${env.app.port}/reset-password?token=${token}`;
+    const url = `${env.app.client_url}/reset-password?token=${token}`;
     const subject = "Reset your password";
     const data = {
       email,

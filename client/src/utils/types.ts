@@ -35,3 +35,16 @@ export type LoginForm = {
   password: string;
   deviceType: string;
 };
+
+export type ForgotPasswordForm = {
+  email: string;
+};
+export type ResetPasswordForm = {
+  password: string;
+  confirm_password: string;
+};
+
+export type DefaultApiResponse = {
+  status: boolean;
+  message?: string;
+};

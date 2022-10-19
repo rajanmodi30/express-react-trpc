@@ -21,6 +21,7 @@ export const env = {
     api_rate_limit: toNumber(getOsEnv("API_RATE_LIMIT")),
     root_dir: getOsEnv("APP_ENV") === "production" ? "dist" : "src",
     user_uploaded_content_path: getOsEnv("USER_UPLOADED_CONTENT_PATH"),
+    client_url: getOsEnv("CLIENT_APP_URL"),
   },
   auth: {
     secret: getOsEnv("JWT_SECRET"),

@@ -7,6 +7,7 @@ import { Admin } from "./layouts/Admin";
 import { Auth } from "./layouts/Auth";
 import { NotFound } from "./pages/NotFound";
 import { ForgotPassword } from "./pages/ForgotPassword";
+import { ResetPassword } from "./pages/ResetPassword";
 
 export const RouterConfig = () => {
   return useRoutes([
@@ -21,6 +22,10 @@ export const RouterConfig = () => {
         {
           path: "forgot-password",
           element: <ForgotPassword />,
+        },
+        {
+          path: "reset-password",
+          element: <ResetPassword />,
         },
       ],
     },
