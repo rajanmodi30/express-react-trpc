@@ -14,13 +14,6 @@ export interface menuItems {
   toCallFn?: () => void;
 }
 
-export interface AuthState {
-  user: User | null;
-  setUser: (userObject: User) => void;
-  removeUser: () => void;
-  setToken: (token: string) => void;
-}
-
 export type SignUpForm = {
   firstName: string;
   lastName: string;
@@ -48,3 +41,11 @@ export type DefaultApiResponse = {
   status: boolean;
   message?: string;
 };
+
+export interface AuthState {
+  user: User | null;
+  token: string | null;
+  setUser: (user: User | null) => void;
+  setToken: (user: string | null) => void;
+  removeAll: () => void;
+}
