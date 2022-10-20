@@ -32,6 +32,7 @@ axios.interceptors.response.use(
   },
   (error) => {
     const message = error.response?.data?.message || error.message;
+    console.error(message);
     const difference = lastTimeCalledAt
       ? (Date.now() - lastTimeCalledAt.getTime()) / 1000
       : 0;
