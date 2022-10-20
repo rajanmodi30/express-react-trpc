@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { useAuthStore } from "../store/auth";
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;
-// const { token, removeAll } = useAuthStore();
+const { token, removeAll } = useAuthStore.getState();
 let lastTimeCalledAt: any = null;
 
 function authRequestInterceptor(config: AxiosRequestConfig) {
@@ -12,9 +12,9 @@ function authRequestInterceptor(config: AxiosRequestConfig) {
     Accept: "application/json",
     ...config.headers,
   };
-  // if (token) {
-  //   config.headers.authorization = `Bearer ${token}`;
-  // }
+  if (token) {
+    config.headers.authorization = `Bearer ${token}`;
+  }
   return config;
 }
 
@@ -26,7 +26,7 @@ axios.interceptors.request.use(authRequestInterceptor);
 axios.interceptors.response.use(
   (response) => {
     if (response.status === 401) {
-      // removeAll();
+      removeAll();
     }
     return response;
   },
