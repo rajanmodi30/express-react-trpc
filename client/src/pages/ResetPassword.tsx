@@ -14,7 +14,6 @@ import { toast } from "react-toastify";
 import { object, ref, string } from "yup";
 import { axios } from "../utils/axios";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Copyright } from "../components/Copyright";
 import { DefaultApiResponse, ResetPasswordForm } from "../utils/types";
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -183,8 +182,6 @@ export const ResetPassword = () => {
           </Box>
         </>
       )}
-
-      <Copyright sx={{ mt: 5 }} />
     </Box>
   );
 };

@@ -15,7 +15,6 @@ import { toast } from "react-toastify";
 import { object, string } from "yup";
 import { axios } from "../utils/axios";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Copyright } from "../components/Copyright";
 import { ForgotPasswordForm } from "../utils/types";
 export const ForgotPassword = () => {
   const forgotMutation = useMutation((data: ForgotPasswordForm) => {
