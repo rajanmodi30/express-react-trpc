@@ -21,13 +21,14 @@ import { LoginForm } from "../utils/types";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
+import { ENDPOINTS } from "../utils/apis";
 
 export const Login = () => {
   const navigate = useNavigate();
   const { setUser, setToken } = useAuthStore();
 
   const loginMutation = useMutation((data: LoginForm) => {
-    return axios.post("login", data);
+    return axios.post(ENDPOINTS.LOGIN, data);
   });
 
   const [showPassword, setShowPassword] = useState(false);

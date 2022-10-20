@@ -16,9 +16,10 @@ import { object, string } from "yup";
 import { axios } from "../utils/axios";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { ForgotPasswordForm } from "../utils/types";
+import { ENDPOINTS } from "../utils/apis";
 export const ForgotPassword = () => {
   const forgotMutation = useMutation((data: ForgotPasswordForm) => {
-    return axios.post("forgot-password", data);
+    return axios.post(ENDPOINTS.FORGOT_PASSWORD, data);
   });
 
   const navigate = useNavigate();

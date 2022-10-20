@@ -17,13 +17,14 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { DefaultApiResponse, ResetPasswordForm } from "../utils/types";
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { ENDPOINTS } from "../utils/apis";
 
 export const ResetPassword = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.getAll("token");
 
   const resetMutation = useMutation((data: ResetPasswordForm) => {
-    return axios.post(`reset-password?token=${token}`, data);
+    return axios.post(ENDPOINTS.RESET_PASSWORD(token), data);
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -38,7 +39,7 @@ export const ResetPassword = () => {
 
   const checkToken = (): Promise<DefaultApiResponse> =>
     axios
-      .get(`/reset-password?token=${token}`)
+      .get(ENDPOINTS.RESET_PASSWORD_TOKEN(token))
       .then((response) => response.data);
 
   const { isLoading, data, isSuccess } = useQuery(["checkToken"], checkToken);
