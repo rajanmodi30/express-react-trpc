@@ -32,16 +32,20 @@ axios.interceptors.response.use(
   },
   (error) => {
     const message = error.response?.data?.message || error.message;
-
     const difference = lastTimeCalledAt
       ? (Date.now() - lastTimeCalledAt.getTime()) / 1000
       : 0;
-    if (lastTimeCalledAt && difference > 10000) {
-      lastTimeCalledAt = new Date();
-      toast.error("OOPS Something went wrong");
-    } else if (!lastTimeCalledAt) {
-      toast.error("OOPS Something went wrong");
-      lastTimeCalledAt = new Date();
+    if (error.response?.status === 401) {
+      toast.error("You have been logged out");
+      removeAll();
+    } else {
+      if (lastTimeCalledAt && difference > 10000) {
+        lastTimeCalledAt = new Date();
+        toast.error("OOPS Something went wrong");
+      } else if (!lastTimeCalledAt) {
+        toast.error("OOPS Something went wrong");
+        lastTimeCalledAt = new Date();
+      }
     }
     return Promise.reject(error);
   }

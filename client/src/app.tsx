@@ -1,28 +1,38 @@
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { Suspense } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosInstance } from "axios";
+import { Suspense, useEffect } from "react";
 import { Loader } from "./components/Loader";
 import { RouterConfig } from "./router";
+import { useAuthStore } from "./store/auth";
+import { axios } from "./utils/axios";
 
 export const App = () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        networkMode: "always",
-        retry: false,
+  type mutationData = {
+    axios: AxiosInstance;
+    token: string | null;
+  };
+
+  const { user, token } = useAuthStore();
+
+  useEffect(() => {
+    if (user) {
+      const data: mutationData = { axios, token };
+      mutation.mutate(data);
+    }
+  }, [user]);
+
+  const mutation = useMutation((data: mutationData) => {
+    return data.axios.get("profile", {
+      headers: {
+        authorization: `Bearer ${data.token}`,
       },
-      mutations: {
-        networkMode: "always",
-        retry: false,
-      },
-    },
+    });
   });
 
   return (
     <>
       <Suspense fallback={<Loader />}>
-        <QueryClientProvider client={queryClient}>
-          <RouterConfig />
-        </QueryClientProvider>
+        <RouterConfig />
       </Suspense>
     </>
   );
