@@ -3,6 +3,8 @@ import {
   Button,
   CssBaseline,
   Grid,
+  IconButton,
+  InputAdornment,
   Paper,
   TextField,
   Typography,
@@ -20,6 +22,8 @@ import storage from "../utils/storage";
 import { LoginForm } from "../utils/types";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Copyright } from "../components/Copyright";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useState } from "react";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -28,6 +32,10 @@ export const Login = () => {
   const loginMutation = useMutation((data: LoginForm) => {
     return axios.post("login", data);
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
   const LoginSchema = object().shape({
     email: string().email().required(),
@@ -128,7 +136,7 @@ export const Login = () => {
                 fullWidth
                 name="password"
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 autoComplete="current-password"
                 aria-errormessage=""
@@ -138,6 +146,19 @@ export const Login = () => {
                   formik.touched.password && Boolean(formik.errors.password)
                 }
                 helperText={formik.touched.password && formik.errors.password}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
               <Button
                 type="submit"

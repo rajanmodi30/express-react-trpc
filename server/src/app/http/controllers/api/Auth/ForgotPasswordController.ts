@@ -69,6 +69,14 @@ export class ForgotPasswordController {
     const { password } = req.body.validatedData;
     const { user } = req.body.auth;
 
+    const passwordsAreSame = bcrypt.compareSync(password, user.password);
+
+    if (passwordsAreSame) {
+      return res.send({
+        status: false,
+        message: req.t("user.reset_same_password"),
+      });
+    }
     await dbConnection.user.update({
       where: {
         id: user.id,

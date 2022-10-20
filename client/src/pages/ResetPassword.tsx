@@ -3,6 +3,8 @@ import {
   Button,
   CssBaseline,
   Grid,
+  IconButton,
+  InputAdornment,
   Paper,
   TextField,
   Typography,
@@ -17,7 +19,8 @@ import { axios } from "../utils/axios";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Copyright } from "../components/Copyright";
 import { DefaultApiResponse, ResetPasswordForm } from "../utils/types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 export const ResetPassword = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const token = searchParams.getAll("token");
@@ -25,6 +28,16 @@ export const ResetPassword = () => {
   const resetMutation = useMutation((data: ResetPasswordForm) => {
     return axios.post(`reset-password?token=${token}`, data);
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
+
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const handleClickShowConfirmPassword = () =>
+    setShowConfirmPassword(!showConfirmPassword);
+  const handleMouseDownConfirmPassword = () =>
+    setShowConfirmPassword(!showConfirmPassword);
 
   const checkToken = (): Promise<DefaultApiResponse> =>
     axios
@@ -129,7 +142,7 @@ export const ResetPassword = () => {
                     name="password"
                     autoComplete="password"
                     autoFocus
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     onChange={formik.handleChange}
                     value={formik.values.password}
                     error={
@@ -138,6 +151,19 @@ export const ResetPassword = () => {
                     helperText={
                       formik.touched.password && formik.errors.password
                     }
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                          >
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />{" "}
                   <TextField
                     margin="normal"
@@ -148,7 +174,7 @@ export const ResetPassword = () => {
                     name="confirm_password"
                     autoComplete="password"
                     autoFocus
-                    type="password"
+                    type={showConfirmPassword ? "text" : "password"}
                     onChange={formik.handleChange}
                     value={formik.values.confirm_password}
                     error={
@@ -159,6 +185,23 @@ export const ResetPassword = () => {
                       formik.touched.confirm_password &&
                       formik.errors.confirm_password
                     }
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowConfirmPassword}
+                            onMouseDown={handleMouseDownConfirmPassword}
+                          >
+                            {showConfirmPassword ? (
+                              <Visibility />
+                            ) : (
+                              <VisibilityOff />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                   <Button
                     type="submit"
