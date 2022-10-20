@@ -1,4 +1,3 @@
-import { Copyright } from "@mui/icons-material";
 import { CssBaseline, Grid, Paper } from "@mui/material";
 import { Outlet } from "react-router-dom";
 
@@ -25,7 +24,6 @@ export const Auth = () => {
         />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Outlet />
-          {/* <Copyright sx={{ mt: 5 }} /> */}
         </Grid>
       </Grid>
     </>
