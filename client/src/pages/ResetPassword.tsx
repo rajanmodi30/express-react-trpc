@@ -1,11 +1,8 @@
 import {
   Avatar,
   Button,
-  CssBaseline,
-  Grid,
   IconButton,
   InputAdornment,
-  Paper,
   TextField,
   Typography,
 } from "@mui/material";
@@ -19,8 +16,9 @@ import { axios } from "../utils/axios";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Copyright } from "../components/Copyright";
 import { DefaultApiResponse, ResetPasswordForm } from "../utils/types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+
 export const ResetPassword = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const token = searchParams.getAll("token");
@@ -78,147 +76,115 @@ export const ResetPassword = () => {
     },
   });
   return (
-    <>
-      <Grid container component="main" sx={{ height: "100vh" }}>
-        <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage: "url(https://source.unsplash.com/random)",
-            backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+    <Box
+      sx={{
+        my: 8,
+        mx: 4,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <LockOutlinedIcon />
+      </Avatar>
+      <Typography component="h1" variant="h5">
+        Reset Password
+      </Typography>
+      {isLoading ? (
+        <>
+          <span> Checking Your Reset Request</span>
+        </>
+      ) : isSuccess && !data.status ? (
+        <>
+          <span>{data.message}</span>
+          <Button component={Link} to="/" variant="contained">
+            Login
+          </Button>
+        </>
+      ) : (
+        <>
           <Box
-            sx={{
-              my: 8,
-              mx: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
+            component="form"
+            noValidate
+            onSubmit={formik.handleSubmit}
+            sx={{ mt: 1 }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Reset Password
-            </Typography>
-            {isLoading ? (
-              <>
-                <span> Checking Your Reset Request</span>
-              </>
-            ) : isSuccess && !data.status ? (
-              <>
-                <span>{data.message}</span>
-                <Button component={Link} to="/" variant="contained">
-                  Login
-                </Button>
-              </>
-            ) : (
-              <>
-                <Box
-                  component="form"
-                  noValidate
-                  onSubmit={formik.handleSubmit}
-                  sx={{ mt: 1 }}
-                >
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="password"
-                    label="Password"
-                    name="password"
-                    autoComplete="password"
-                    autoFocus
-                    type={showPassword ? "text" : "password"}
-                    onChange={formik.handleChange}
-                    value={formik.values.password}
-                    error={
-                      formik.touched.password && Boolean(formik.errors.password)
-                    }
-                    helperText={
-                      formik.touched.password && formik.errors.password
-                    }
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                          >
-                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />{" "}
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="confirm_password"
-                    label="Confirm Password"
-                    name="confirm_password"
-                    autoComplete="password"
-                    autoFocus
-                    type={showConfirmPassword ? "text" : "password"}
-                    onChange={formik.handleChange}
-                    value={formik.values.confirm_password}
-                    error={
-                      formik.touched.confirm_password &&
-                      Boolean(formik.errors.confirm_password)
-                    }
-                    helperText={
-                      formik.touched.confirm_password &&
-                      formik.errors.confirm_password
-                    }
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowConfirmPassword}
-                            onMouseDown={handleMouseDownConfirmPassword}
-                          >
-                            {showConfirmPassword ? (
-                              <Visibility />
-                            ) : (
-                              <VisibilityOff />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                  >
-                    Change Password
-                  </Button>
-                </Box>
-              </>
-            )}
-
-            <Copyright sx={{ mt: 5 }} />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="password"
+              label="Password"
+              name="password"
+              autoComplete="password"
+              autoFocus
+              type={showPassword ? "text" : "password"}
+              onChange={formik.handleChange}
+              value={formik.values.password}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />{" "}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="confirm_password"
+              label="Confirm Password"
+              name="confirm_password"
+              autoComplete="password"
+              autoFocus
+              type={showConfirmPassword ? "text" : "password"}
+              onChange={formik.handleChange}
+              value={formik.values.confirm_password}
+              error={
+                formik.touched.confirm_password &&
+                Boolean(formik.errors.confirm_password)
+              }
+              helperText={
+                formik.touched.confirm_password &&
+                formik.errors.confirm_password
+              }
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowConfirmPassword}
+                      onMouseDown={handleMouseDownConfirmPassword}
+                    >
+                      {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Change Password
+            </Button>
           </Box>
-        </Grid>
-      </Grid>
-    </>
+        </>
+      )}
+
+      <Copyright sx={{ mt: 5 }} />
+    </Box>
   );
 };

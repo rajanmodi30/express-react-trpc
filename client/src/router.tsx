@@ -1,4 +1,4 @@
-import { useRoutes } from "react-router-dom";
+import { Navigate, useRoutes } from "react-router-dom";
 import { lazyImport } from "./utils/lazyImport";
 import { Login } from "./pages/Login";
 import { Dashboard } from "./pages/Dashboard";
@@ -8,12 +8,15 @@ import { Auth } from "./layouts/Auth";
 import { NotFound } from "./pages/NotFound";
 import { ForgotPassword } from "./pages/ForgotPassword";
 import { ResetPassword } from "./pages/ResetPassword";
+import { useAuthStore } from "./store/auth";
 
 export const RouterConfig = () => {
+  const { user } = useAuthStore();
+
   return useRoutes([
     {
       path: "/",
-      element: <Auth />,
+      element: user ? <Navigate to="/admin" /> : <Auth />,
       children: [
         {
           index: true,
@@ -31,7 +34,7 @@ export const RouterConfig = () => {
     },
     {
       path: "/admin",
-      element: <Admin />,
+      element: user ? <Admin /> : <Navigate to="/" />,
       children: [
         {
           index: true,
