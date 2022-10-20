@@ -20,7 +20,7 @@ import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export const ResetPassword = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const token = searchParams.getAll("token");
 
   const resetMutation = useMutation((data: ResetPasswordForm) => {
