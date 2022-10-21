@@ -1,10 +1,16 @@
-import { Request, Router, Response } from "express";
+import { Router } from "express";
 import { PingController } from "../../app/http/controllers/api/PingController";
 import { verifyToken } from "../../app/http/middleware/Auth";
 import devicesRouter from "./device";
 import NotificationRouter from "./notification";
 import authRouter from "./auth";
-//ROUTES IMPORT
+// import { publicProcedure, trpcRouter } from "../../app/providers/trpc";
+
+// //ROUTES IMPORT
+
+// const appRouter = trpcRouter({
+//   greeting: publicProcedure.query(() => "hello tRPC v10!"),
+// });
 
 const router = Router();
 
@@ -18,3 +24,6 @@ router.use("/notifications", verifyToken, NotificationRouter);
 
 //ROUTERS USE ADD HERE
 export default router;
+
+// Export only the **type** of a router to avoid importing server code on the client
+// export type AppRouter = typeof appRouter;

@@ -12,6 +12,8 @@ import {
   NotFoundHandler,
 } from "../http/middleware/ExceptionHandler";
 import cors from "cors";
+import * as trpcExpress from "@trpc/server/adapters/express";
+import { appRouter, createContext } from "./trpc";
 
 export class Express {
   app: Application;
@@ -80,6 +82,16 @@ export class Express {
         })
       );
     }
+  };
+
+  configureTrpc = () => {
+    this.app.use(
+      "/trpc",
+      trpcExpress.createExpressMiddleware({
+        router: appRouter,
+        createContext,
+      })
+    );
   };
 
   configureExceptionHandler = () => {

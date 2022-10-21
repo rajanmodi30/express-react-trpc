@@ -521,6 +521,21 @@
     "@tanstack/query-core" "4.12.0"
     use-sync-external-store "^1.2.0"
 
+"@trpc/client@^10.0.0-proxy-beta.24":
+  version "10.0.0-proxy-beta.24"
+  resolved "https://registry.yarnpkg.com/@trpc/client/-/client-10.0.0-proxy-beta.24.tgz#20a479fc17dc29d944f25c02580c810df87ab3dd"
+  integrity sha512-/cap8JsWPQUfh2iiAAM5bpWabsizw3bNdkk2hmSqlUUIQYffhsKnWnSrxHCTydAjCgkZtRfdYvon4OS4Nbk5oQ==
+
+"@trpc/react-query@^10.0.0-proxy-beta.24":
+  version "10.0.0-proxy-beta.24"
+  resolved "https://registry.yarnpkg.com/@trpc/react-query/-/react-query-10.0.0-proxy-beta.24.tgz#15a9e0899b84fecb895e45320b3e92251df36344"
+  integrity sha512-ffyvsCds9/alkM3f1VBnO5Rrf/hPugNYSV3OlRZgOPefcBhylrc4acpBodL5aGPwj6WSiHLawkNRpmVB4XlfmA==
+
+"@trpc/server@^10.0.0-proxy-beta.24":
+  version "10.0.0-proxy-beta.24"
+  resolved "https://registry.yarnpkg.com/@trpc/server/-/server-10.0.0-proxy-beta.24.tgz#d5c1735c14a4ed850e32a334e659c352f12d1e50"
+  integrity sha512-//7IhD+SN5UcpVH35CGDXph6zO38FLTDI8cMn+FHrDSCecMrncmnpGuTOlw7m5Din96FJtqsxJL2yc2T94HhcQ==
+
 "@types/lodash@^4.14.175":
   version "4.14.186"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.186.tgz#862e5514dd7bd66ada6c70ee5fce844b06c8ee97"

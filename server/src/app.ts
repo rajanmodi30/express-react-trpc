@@ -14,6 +14,7 @@ Promise.all([
   express.configureRateLimiter(),
   express.configureLocale(middleware, i18next),
   express.configureViews(serverAdapter),
+  express.configureTrpc(),
   express.configureExceptionHandler(),
 ]).then(() => {
   const app = express.app;

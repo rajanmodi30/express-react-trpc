@@ -22,6 +22,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import { ENDPOINTS } from "../utils/apis";
+import { trpc } from "../utils/trpc";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -30,6 +31,12 @@ export const Login = () => {
   const loginMutation = useMutation((data: LoginForm) => {
     return axios.post(ENDPOINTS.LOGIN, data);
   });
+
+  const { data, isSuccess } = trpc.hello.useQuery();
+
+  if (isSuccess) {
+    console.log(data);
+  }
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
