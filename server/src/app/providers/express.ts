@@ -13,7 +13,8 @@ import {
 } from "../http/middleware/ExceptionHandler";
 import cors from "cors";
 import * as trpcExpress from "@trpc/server/adapters/express";
-import { appRouter, createContext } from "./trpc";
+import { appRouter } from "../../routes/api/router";
+import { createContext } from "../providers/context";
 
 export class Express {
   app: Application;
@@ -40,7 +41,6 @@ export class Express {
     this.app.use(helmet());
     this.app.use(compression());
     this.app.disable("x-powered-by");
-
     // error handler
     this.app.set("port", port);
   };

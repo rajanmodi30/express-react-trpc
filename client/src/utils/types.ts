@@ -3,7 +3,7 @@ export type User = {
   lastName: string;
   fullName: string;
   email: string;
-  createdAt: string;
+  createdAt: Date;
 };
 
 export interface menuItems {
@@ -13,39 +13,16 @@ export interface menuItems {
   show: boolean;
   toCallFn?: () => void;
 }
-
-export type SignUpForm = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  confirm_password: string;
-  deviceType: string;
-};
-
-export type LoginForm = {
-  email: string;
-  password: string;
-  deviceType: string;
-};
-
-export type ForgotPasswordForm = {
-  email: string;
-};
-export type ResetPasswordForm = {
-  password: string;
-  confirm_password: string;
-};
-
-export type DefaultApiResponse = {
-  status: boolean;
-  message?: string;
-};
-
 export interface AuthState {
   user: User | null;
   token: string | null;
   setUser: (user: User | null) => void;
   setToken: (user: string | null) => void;
   removeAll: () => void;
+}
+
+export enum DEVICES {
+  IOS = "IOS",
+  ANDROID = "ANDROID",
+  WEB = "WEB",
 }

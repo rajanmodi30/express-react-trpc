@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { PingController } from "../../app/http/controllers/api/PingController";
-import { verifyToken } from "../../app/http/middleware/Auth";
+// import { verifyToken } from "../../app/http/middleware/Auth";
 import devicesRouter from "./device";
 import NotificationRouter from "./notification";
 import authRouter from "./auth";
@@ -16,11 +16,11 @@ const router = Router();
 
 router.get("/", PingController.pong);
 
-router.use("/", authRouter);
+// router.use("/", authRouter);
 
-router.use("/devices", verifyToken, devicesRouter);
+// router.use("/devices", verifyToken, devicesRouter);
 
-router.use("/notifications", verifyToken, NotificationRouter);
+// router.use("/notifications", verifyToken, NotificationRouter);
 
 //ROUTERS USE ADD HERE
 export default router;

@@ -1,26 +1,13 @@
-import {
-  Avatar,
-  Button,
-  CssBaseline,
-  Grid,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Avatar, Button, Grid, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { object, string } from "yup";
-import { axios } from "../utils/axios";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { ForgotPasswordForm } from "../utils/types";
-import { ENDPOINTS } from "../utils/apis";
+import { trpc } from "../utils/trpc";
 export const ForgotPassword = () => {
-  const forgotMutation = useMutation((data: ForgotPasswordForm) => {
-    return axios.post(ENDPOINTS.FORGOT_PASSWORD, data);
-  });
+  const forgotMutation = trpc.forgotPassword.forgot.useMutation();
 
   const navigate = useNavigate();
 
@@ -36,7 +23,7 @@ export const ForgotPassword = () => {
     onSubmit: (values) => {
       forgotMutation.mutate(values, {
         onSuccess: (data) => {
-          const { status, message } = data.data;
+          const { status, message } = data;
           if (status) {
             toast.success(message);
             navigate("/");

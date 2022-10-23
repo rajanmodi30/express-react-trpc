@@ -1,32 +1,24 @@
-import { NextFunction, Request, Response } from "express";
+import { User } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
 import jwt from "jsonwebtoken";
 import { env } from "../../../env";
+import { DeviceWithUser } from "../../../utils/types";
 import dbConnection from "../../providers/db";
+import { middleware } from "../../providers/trpc";
 
-export const verifyToken = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const bearerToken = req.headers["authorization"];
-  let token = null;
-  if (bearerToken) {
-    token = bearerToken.split(" ")[1];
-  }
-
-  if (!token) {
-    return res.status(401).send({
-      status: false,
-      message: "Unauthorized",
-    });
-  }
-
+export const VerifyAuthToken = middleware(async ({ next, ctx }) => {
   try {
-    const decoded = jwt.verify(token, env.auth.secret);
+    if (ctx.bearerToken === undefined) {
+      throw "Invalid Token";
+    }
+    let user: null | User = null,
+      device: DeviceWithUser = null;
+
+    const decoded = jwt.verify(ctx.bearerToken, env.auth.secret);
     if (typeof decoded !== "string") {
-      const device = await dbConnection.device.findFirst({
+      device = await dbConnection.device.findFirst({
         where: {
-          authToken: token,
+          authToken: ctx.bearerToken,
           deletedAt: null,
         },
         include: {
@@ -36,70 +28,51 @@ export const verifyToken = async (
       if (!device) {
         throw "Invalid Token";
       }
-      req.body.auth = {
-        bearerToken: token,
-        device: device,
-        user: device.user,
-      };
+      if (!device.user) {
+        throw "Invalid Token";
+      }
+      user = device.user;
     } else {
-      throw "user not found";
-    }
-  } catch (err) {
-    return res.status(401).send({
-      status: false,
-      message: "Invalid Token",
-    });
-  }
-  return next();
-};
-
-export const verifyResetToken = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const token = req.query.token;
-
-    if (!token || typeof token !== "string") {
-      return res.status(401).send({
-        status: false,
-        message: req.t("user.token_not_found"),
-      });
+      throw "Invalid Token";
     }
 
-    const decoded = jwt.verify(token, env.auth.secret);
-
-    if (typeof decoded === "string") {
-      return res.send({
-        status: false,
-        message: req.t("user.link_expired"),
-      });
-    }
-
-    const user = await dbConnection.user.findFirst({
-      where: {
-        forgotPasswordToken: token,
+    return next({
+      ctx: {
+        ...ctx,
+        user: user,
+        device: device,
       },
     });
-
-    if (!user) {
-      return res.send({
-        status: false,
-        message: req.t("user.link_expired"),
-      });
-    }
-
-    req.body.auth = {
-      token: token,
-      user: user,
-    };
-
-    next();
   } catch (err) {
-    return res.send({
-      status: false,
-      message: req.t("user.invalid_reset_link"),
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "You are not authorized",
     });
   }
+});
+
+export const VerifyResetToken = async (resetToken: undefined | string) => {
+  if (typeof resetToken === "undefined") {
+    throw "Invalid Link";
+  }
+
+  const decoded = jwt.verify(resetToken, env.auth.secret);
+
+  if (typeof decoded === "string") {
+    throw "Link Expired";
+    // message: req.t("user.link_expired"),
+  }
+
+  const user = await dbConnection.user.findFirst({
+    where: {
+      forgotPasswordToken: resetToken,
+    },
+  });
+
+  if (!user) {
+    throw "Link Expired";
+    // message: req.t("user.link_expired"),
+  }
+
+  return user;
 };

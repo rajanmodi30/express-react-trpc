@@ -1,89 +1,52 @@
-import { Request, Response } from "express";
+import {
+  protectedProcedure,
+  publicProcedure,
+  trpcRouter,
+} from "../../../../providers/trpc";
 import { DeviceService } from "../../../../services/DeviceService";
 import { LoginService } from "../../../../services/LoginService";
-import { SignUpService } from "../../../../services/SignUpService";
+import { VerifyAuthToken } from "../../../middleware/Auth";
+import { LoginRequest } from "../../../requests/LoginRequest";
 import { UserResponse } from "../../../responses/UserResponse";
 
-export class AuthController {
-  public static async signUp(req: Request, res: Response) {
-    const validatedData = req.body;
-    const userExists = await SignUpService.checkIfUserExists(
-      validatedData.email
-    );
-
-    if (userExists) {
-      return res.status(200).send({
-        status: false,
-        message: req.t("user.user_already_exists"),
-      });
-    }
-
-    const user = await SignUpService.signUp(validatedData);
-    const { deviceType, fcmToken, metaData } = validatedData;
-    const device = await DeviceService.create(
-      user.id,
-      deviceType,
-      fcmToken ?? null,
-      metaData ?? {}
-    );
-
-    return res.send({
-      status: true,
-      data: UserResponse(user),
-      accessToken: device.authToken,
-      message: req.t("user.user_created"),
-    });
-  }
-
-  public static async login(req: Request, res: Response) {
-    const { email, password, deviceType, fcmToken, metaData } =
-      req.body.validatedData;
+export const AuthController = trpcRouter({
+  login: publicProcedure.input(LoginRequest).mutation(async ({ input }) => {
+    const { email, password, deviceType, fcmToken } = input;
     const user = await LoginService.login(email, password);
 
     if (user === null) {
-      return res.status(200).json({
+      return {
         status: false,
-        message: req.t("user.wrong_email_or_password"),
-      });
+        message: "Wrong Email Or Password",
+      };
     }
 
     const device = await DeviceService.create(
       user.id,
       deviceType,
-      fcmToken ?? null,
-      metaData ?? {}
+      fcmToken ?? undefined,
+      {}
     );
 
-    return res.json({
+    return {
       status: true,
       data: UserResponse(user),
       accessToken: device.authToken,
-      message: req.t("user.logged_in"),
-    });
-  }
-
-  public static async profile(req: Request, res: Response) {
-    const { user } = req.body.auth;
-    if (user === null) {
-      return res.status(401).json({
-        status: false,
-        message: req.t("user.user_not_found"),
-      });
-    }
-
-    return res.json({
+      message: "Logged In Successfully",
+    };
+  }),
+  profile: protectedProcedure.use(VerifyAuthToken).mutation(({ ctx }) => {
+    return {
       status: true,
-      data: UserResponse(user),
-    });
-  }
-
-  public static async logOut(req: Request, res: Response) {
-    const { device, user } = req.body.auth;
+      user: UserResponse(ctx.user),
+    };
+  }),
+  logOut: protectedProcedure.use(VerifyAuthToken).mutation(({ ctx }) => {
+    const { device, user } = ctx;
     DeviceService.delete(device.id, user.id);
-
-    return res.json({
+    return {
       status: true,
-      message: req.t("user.logged_out"),
-    });
-  }
-}
+      message: "Logged out",
+    };
+  }),
+});

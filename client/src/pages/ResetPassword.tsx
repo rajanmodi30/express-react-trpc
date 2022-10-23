@@ -7,25 +7,20 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { object, ref, string } from "yup";
-import { axios } from "../utils/axios";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { DefaultApiResponse, ResetPasswordForm } from "../utils/types";
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { ENDPOINTS } from "../utils/apis";
+import { trpc } from "../utils/trpc";
 
 export const ResetPassword = () => {
   const [searchParams] = useSearchParams();
-  const token = searchParams.getAll("token");
+  const token = searchParams.get("token");
 
-  const resetMutation = useMutation((data: ResetPasswordForm) => {
-    return axios.post(ENDPOINTS.RESET_PASSWORD(token), data);
-  });
+  const resetMutation = trpc.forgotPassword.resetPassword.useMutation();
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -37,12 +32,10 @@ export const ResetPassword = () => {
   const handleMouseDownConfirmPassword = () =>
     setShowConfirmPassword(!showConfirmPassword);
 
-  const checkToken = (): Promise<DefaultApiResponse> =>
-    axios
-      .get(ENDPOINTS.RESET_PASSWORD_TOKEN(token))
-      .then((response) => response.data);
-
-  const { isLoading, data, isSuccess } = useQuery(["checkToken"], checkToken);
+  const { isLoading, isError, error, isSuccess } =
+    trpc.forgotPassword.checkResetToken.useQuery({
+      resetToken: token ?? "",
+    });
 
   const navigate = useNavigate();
 
@@ -62,17 +55,20 @@ export const ResetPassword = () => {
     },
     validationSchema: resetPasswordSchema,
     onSubmit: (values) => {
-      resetMutation.mutate(values, {
-        onSuccess: (data) => {
-          const { status, message } = data.data;
-          if (status) {
-            toast.success(message);
-            navigate("/");
-          } else {
-            toast.error(message);
-          }
-        },
-      });
+      resetMutation.mutate(
+        { ...values, resetToken: token ?? "" },
+        {
+          onSuccess: (data) => {
+            const { status, message } = data;
+            if (status) {
+              toast.success(message);
+              navigate("/");
+            } else {
+              toast.error(message);
+            }
+          },
+        }
+      );
     },
   });
   return (
@@ -95,9 +91,9 @@ export const ResetPassword = () => {
         <>
           <span> Checking Your Reset Request</span>
         </>
-      ) : isSuccess && !data.status ? (
+      ) : isError ? (
         <>
-          <span>{data.message}</span>
+          <span>{error.message}</span>
           <Button component={Link} to="/" variant="contained">
             Login
           </Button>

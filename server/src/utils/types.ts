@@ -1,3 +1,4 @@
+import { Device, User } from "@prisma/client";
 import { MessagingPayload } from "firebase-admin/lib/messaging/messaging-api";
 
 export enum PushNotificationChannels {
@@ -60,3 +61,9 @@ export const ALLOWED_IMAGE_TYPE = [
 export const ALLOWED_VIDEO_TYPE = ["video/mp4"];
 
 export const ALLOWED_FILE_TYPES = ["application/pdf"];
+
+export type DeviceWithUser =
+  | (Device & {
+      user: User;
+    })
+  | null;

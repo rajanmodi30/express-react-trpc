@@ -1,15 +1,14 @@
-import { useMutation } from "@tanstack/react-query";
-import { AxiosInstance } from "axios";
 import { Suspense, useEffect, useState } from "react";
 import { Loader } from "./components/Loader";
 import { RouterConfig } from "./router";
 import { useAuthStore } from "./store/auth";
-import { axios } from "./utils/axios";
 import { trpc } from "./utils/trpc";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 
 export const App = () => {
+  const { user, token } = useAuthStore();
+
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -22,26 +21,21 @@ export const App = () => {
       },
     },
   });
+
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: "http://localhost:3000/trpc",
+          url: import.meta.env.VITE_API_BASE_URL,
+          headers() {
+            return {
+              Authorization: token ?? "",
+            };
+          },
         }),
       ],
     })
   );
-  // type mutationData = {
-  //   axios: AxiosInstance;
-  //   token: string | null;
-  // };
-
-  // const { user, token } = useAuthStore();
-  // const { data, isSuccess } = trpc.hello.useQuery();
-
-  // if (isSuccess) {
-  //   console.log("data", data);
-  // }
 
   // useEffect(() => {
   //   if (user) {
