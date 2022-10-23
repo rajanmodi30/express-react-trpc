@@ -2,7 +2,6 @@ import express, { Application, Request } from "express";
 import "express-async-errors";
 import helmet from "helmet";
 import compression from "compression";
-import apiRouter from "../../routes/api/api";
 import webRouter from "../../routes/web/web";
 import { env } from "../../env";
 import rateLimit from "express-rate-limit";
@@ -51,7 +50,6 @@ export class Express {
     if (!env.app.api_only) {
       this.app.use("/", webRouter);
     }
-    this.app.use(`/${env.app.api_prefix}`, apiRouter);
     this.app.use("/queues", serverAdapter.getRouter());
   };
 
