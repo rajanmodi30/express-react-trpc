@@ -7,7 +7,7 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 
 export const App = () => {
-  const { user, token } = useAuthStore();
+  const { token } = useAuthStore();
 
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -28,8 +28,9 @@ export const App = () => {
         httpBatchLink({
           url: import.meta.env.VITE_API_BASE_URL,
           headers() {
+            console.log("token here", token);
             return {
-              Authorization: token ?? "",
+              Authorization: `Bearer ${token ?? ""}`,
             };
           },
         }),
@@ -37,20 +38,9 @@ export const App = () => {
     })
   );
 
-  // useEffect(() => {
-  //   if (user) {
-  //     const data: mutationData = { axios, token };
-  //     mutation.mutate(data);
-  //   }
-  // }, [user]);
-
-  // const mutation = useMutation((data: mutationData) => {
-  //   return data.axios.get("profile", {
-  //     headers: {
-  //       authorization: `Bearer ${data.token}`,
-  //     },
-  //   });
-  // });
+  useEffect(() => {
+    console.log("token", token);
+  }, [token]);
 
   return (
     <>
