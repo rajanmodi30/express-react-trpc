@@ -1,3 +1,5 @@
+import { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+
 export type User = {
   firstName: string;
   lastName: string;
@@ -27,4 +29,12 @@ export enum DEVICES {
   IOS = "IOS",
   ANDROID = "ANDROID",
   WEB = "WEB",
+}
+
+export interface AppBarProps extends MuiAppBarProps {
+  open?: boolean;
+}
+
+export interface ThemeContextInterface {
+  drawerWidth: number;
 }

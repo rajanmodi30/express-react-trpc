@@ -1,41 +1,41 @@
-import { Divider, Drawer, IconButton, List, Toolbar } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { mainListItems, secondaryListItems } from "../pages/MenuItems";
+import { Divider, IconButton, List, Toolbar } from "@mui/material";
+import MuiDrawer from "@mui/material/Drawer";
+import { styled } from "@mui/material/styles";
+import { mainListItems } from "../pages/MenuItems";
 import { useAuthStore } from "../store/auth";
-import { trpc } from "../utils/trpc";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import { AdminThemeContext } from "../contexts/AdminContext";
+import { useContext } from "react";
 
 export const Sidebar = () => {
   const { openToggleBar, toggleOpenBar } = useAuthStore();
+  const { drawerWidth } = useContext(AdminThemeContext);
 
-  const navigate = useNavigate();
-  const { removeAll } = useAuthStore();
-
-  const logOut = () => {
-    mutate();
-  };
-
-  const { mutate, isSuccess, error, data, isError } =
-    trpc.auth.logOut.useMutation();
-
-  if (isSuccess) {
-    if (data.status) {
-      toast.success(data.message);
-    } else {
-      toast.error(data.message);
-    }
-    removeAll();
-    navigate("/");
-  }
-
-  if (isError) {
-    toast.error(error.message);
-    if (error.data?.code === "UNAUTHORIZED") {
-      removeAll();
-      navigate("/");
-    }
-  }
+  const Drawer = styled(MuiDrawer, {
+    shouldForwardProp: (prop) => prop !== "open",
+  })(({ theme, open }) => ({
+    "& .MuiDrawer-paper": {
+      position: "relative",
+      whiteSpace: "nowrap",
+      width: drawerWidth,
+      transition: theme.transitions.create("width", {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      boxSizing: "border-box",
+      ...(!open && {
+        overflowX: "hidden",
+        transition: theme.transitions.create("width", {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
+        width: theme.spacing(7),
+        [theme.breakpoints.up("sm")]: {
+          width: theme.spacing(9),
+        },
+      }),
+    },
+  }));
 
   return (
     <Drawer variant="permanent" open={openToggleBar}>
@@ -52,11 +52,7 @@ export const Sidebar = () => {
         </IconButton>
       </Toolbar>
       <Divider />
-      <List component="nav">
-        {mainListItems}
-        <Divider sx={{ my: 1 }} />
-        {secondaryListItems}
-      </List>
+      <List component="nav">{mainListItems}</List>
     </Drawer>
   );
 };
