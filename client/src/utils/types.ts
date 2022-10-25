@@ -15,9 +15,11 @@ export interface menuItems {
 }
 export interface AuthState {
   user: User | null;
+  openToggleBar: boolean;
   token: string | null;
   setUser: (user: User | null) => void;
-  setToken: (user: string | null) => void;
+  setToken: (token: string | null) => void;
+  toggleOpenBar: () => void;
   removeAll: () => void;
 }
 
