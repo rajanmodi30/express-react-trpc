@@ -17,18 +17,18 @@ export interface menuItems {
 }
 export interface AuthState {
   user: User | null;
-  openToggleBar: boolean;
   token: string | null;
   setUser: (user: User | null) => void;
   setToken: (token: string | null) => void;
-  toggleOpenBar: () => void;
   removeAll: () => void;
 }
 
 export interface ThemeState {
   defaultPerPageCount: number;
   paginationOptions: number[];
+  openToggleBar: boolean;
   setDefaultPerPageCount: (count: number) => void;
+  toggleOpenBar: () => void;
 }
 
 export enum DEVICES {

@@ -2,13 +2,13 @@ import { Divider, IconButton, List, Toolbar } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import { styled } from "@mui/material/styles";
 import { mainListItems } from "../pages/MenuItems";
-import { useAuthStore } from "../store/auth";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { AdminThemeContext } from "../contexts/AdminContext";
 import { useContext } from "react";
+import { useThemeStore } from "../store/theme";
 
 export const Sidebar = () => {
-  const { openToggleBar, toggleOpenBar } = useAuthStore();
+  const { openToggleBar, toggleOpenBar } = useThemeStore();
   const { drawerWidth } = useContext(AdminThemeContext);
 
   const Drawer = styled(MuiDrawer, {

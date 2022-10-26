@@ -6,13 +6,13 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
-import { useAuthStore } from "../store/auth";
 import { useContext } from "react";
 import { AdminThemeContext } from "../contexts/AdminContext";
 import { AppBarProps } from "../utils/types";
+import { useThemeStore } from "../store/theme";
 
 export const Header = () => {
-  const { openToggleBar, toggleOpenBar } = useAuthStore();
+  const { openToggleBar, toggleOpenBar } = useThemeStore();
   const { drawerWidth } = useContext(AdminThemeContext);
 
   const AppBar = styled(MuiAppBar, {

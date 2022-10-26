@@ -14,7 +14,7 @@ export const NotFound = () => {
         }}
       >
         <Container maxWidth="md">
-          <Grid container spacing={2}>
+          <Grid xs={12} container spacing={2}>
             <Grid xs={6}>
               <Typography variant="h1">404</Typography>
               <Typography variant="h6">

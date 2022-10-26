@@ -1,13 +1,22 @@
-import { Box, Container, Grid, Paper, Toolbar } from "@mui/material";
+import {
+  Box,
+  Breadcrumbs,
+  Container,
+  Grid,
+  Link,
+  Paper,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import {
   DataGrid,
   GridColDef,
   GridFilterModel,
-  GridToolbar,
   GridValueGetterParams,
 } from "@mui/x-data-grid";
 import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
+import { SearchAndExport } from "../components/SearchAndExport";
 import { useThemeStore } from "../store/theme";
 import { defaultDateTimeFormat } from "../utils";
 import { trpc } from "../utils/trpc";
@@ -38,7 +47,6 @@ export const Users = () => {
   };
 
   const handleFilterChange = (data: GridFilterModel) => {
-    console.log(data.quickFilterValues);
     if (
       data.quickFilterValues !== undefined &&
       data.quickFilterValues?.length > 0
@@ -47,7 +55,6 @@ export const Users = () => {
     } else {
       setSearchTerm(undefined);
     }
-    console.log(data);
   };
   if (isError) {
     toast.error(error.message);
@@ -108,8 +115,29 @@ export const Users = () => {
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           <Grid container spacing={3}>
-            <Grid item xs={12} p="20">
-              <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+            <Grid item xs={12}>
+              <Paper sx={{ display: "flex", p: 2, flexDirection: "column" }}>
+                <Breadcrumbs aria-label="breadcrumb">
+                  <Link underline="hover" color="inherit" href="/">
+                    MUI
+                  </Link>
+                  <Link
+                    underline="hover"
+                    color="inherit"
+                    href="/material-ui/getting-started/installation/"
+                  >
+                    Core
+                  </Link>
+                  <Typography color="text.primary">Users </Typography>
+                </Breadcrumbs>
+              </Paper>
+            </Grid>
+          </Grid>
+        </Container>
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Paper sx={{ display: "flex", flexDirection: "column" }}>
                 <DataGrid
                   autoHeight
                   rows={data?.data || []}
@@ -130,13 +158,7 @@ export const Users = () => {
                   onPageChange={(newPage) => {
                     setCurrentPage(newPage);
                   }}
-                  components={{ Toolbar: GridToolbar }}
-                  componentsProps={{
-                    toolbar: {
-                      showQuickFilter: true,
-                      quickFilterProps: { debounceMs: 500 },
-                    },
-                  }}
+                  components={{ Toolbar: SearchAndExport }}
                   onPageSizeChange={(newPageSize) => {
                     setPerPage(newPageSize);
                     setDefaultPerPageCount(newPageSize);
