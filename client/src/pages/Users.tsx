@@ -66,9 +66,9 @@ export const Users = () => {
     }
   }, [data]);
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", type: "number", flex: 1 },
-    { field: "firstName", headerName: "First name", type: "string", flex: 1 },
-    { field: "lastName", headerName: "Last name", type: "string", flex: 1 },
+    { field: "id", headerName: "ID", type: "number" },
+    { field: "firstName", headerName: "First name", type: "string" },
+    { field: "lastName", headerName: "Last name", type: "string" },
     { field: "email", headerName: "Email", type: "string", flex: 1 },
     {
       field: "fullName",
