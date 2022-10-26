@@ -40,6 +40,11 @@ export const App = () => {
     },
   });
 
+  //TODO auto logout and logout right after login issues fix
+  //TODO dashboard sidebar active route link
+  //TODO lazy loading
+  //TODO trpc download trick
+
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
