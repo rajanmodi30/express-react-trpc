@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { env } from "../env";
 import {
   ALLOWED_FILE_TYPES,
@@ -42,3 +43,9 @@ export const validFileTypes = (type: UPLOAD_TYPES) => {
 };
 
 export const STORAGE_PATH = env.app.root_dir + "/storage/uploads";
+
+export const defaultDateTimeFormat = (dateTime: Date) => {
+  return dayjs(dateTime).format("DD-MM-YYYY HH:mm");
+};
+
+export const defaultPagination;

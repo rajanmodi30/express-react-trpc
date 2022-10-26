@@ -1,19 +1,17 @@
 import { User } from "@prisma/client";
 
-export const UserResponse = (data: User | User[]) => {
-  if (Array.isArray(data)) {
-    return data.map((d) => objectResponse(d));
-  }
-
-  return objectResponse(data);
+export const UserListResponse = (data: User[]) => {
+  return data.map((d) => UserResponse(d));
 };
 
-const objectResponse = (user: User) => {
+export const UserResponse = (user: User) => {
   return {
+    id: user.id,
     firstName: user.firstName,
     lastName: user.lastName,
     fullName: user.firstName + " " + user.lastName,
     email: user.email,
     createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
   };
 };

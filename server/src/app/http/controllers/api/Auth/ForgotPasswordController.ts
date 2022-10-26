@@ -7,7 +7,7 @@ import {
   protectedProcedure,
   publicProcedure,
   trpcRouter,
-} from "../../../../providers/trpc";
+} from "../../../../providers/trpcProviders";
 import { ForgotPasswordRequest } from "../../../requests/ForgotPasswordRequest";
 import { VerifyResetToken } from "../../../middleware/Auth";
 import { UserResponse } from "../../../responses/UserResponse";

@@ -1,6 +1,6 @@
 import { AuthController } from "../../app/http/controllers/api/Auth/AuthController";
 import { ForgotPasswordController } from "../../app/http/controllers/api/Auth/ForgotPasswordController";
-import { trpcRouter } from "../../app/providers/trpc";
+import { trpcRouter } from "../../app/providers/trpcProviders";
 
 export const appRouter = trpcRouter({
   auth: AuthController,

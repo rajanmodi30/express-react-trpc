@@ -3,8 +3,8 @@ import { TRPCError } from "@trpc/server";
 import jwt from "jsonwebtoken";
 import { env } from "../../../env";
 import { DeviceWithUser } from "../../../utils/types";
+import { middleware } from "../../providers/context";
 import dbConnection from "../../providers/db";
-import { middleware } from "../../providers/trpc";
 
 export const VerifyAuthToken = middleware(async ({ next, ctx }) => {
   try {

@@ -25,6 +25,12 @@ export interface AuthState {
   removeAll: () => void;
 }
 
+export interface ThemeState {
+  defaultPerPageCount: number;
+  paginationOptions: number[];
+  setDefaultPerPageCount: (count: number) => void;
+}
+
 export enum DEVICES {
   IOS = "IOS",
   ANDROID = "ANDROID",

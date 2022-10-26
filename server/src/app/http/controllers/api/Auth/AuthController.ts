@@ -2,12 +2,13 @@ import {
   protectedProcedure,
   publicProcedure,
   trpcRouter,
-} from "../../../../providers/trpc";
+} from "../../../../providers/trpcProviders";
 import { DeviceService } from "../../../../services/DeviceService";
 import { LoginService } from "../../../../services/LoginService";
-import { VerifyAuthToken } from "../../../middleware/Auth";
 import { LoginRequest } from "../../../requests/LoginRequest";
 import { UserResponse } from "../../../responses/UserResponse";
+import { DeviceController } from "../Device/DeviceController";
+import { UserController } from "../User/UserController";
 
 export const AuthController = trpcRouter({
   login: publicProcedure.input(LoginRequest).mutation(async ({ input }) => {
@@ -35,13 +36,13 @@ export const AuthController = trpcRouter({
       message: "Logged In Successfully",
     };
   }),
-  profile: protectedProcedure.use(VerifyAuthToken).mutation(({ ctx }) => {
+  profile: protectedProcedure.mutation(({ ctx }) => {
     return {
       status: true,
       user: UserResponse(ctx.user),
     };
   }),
-  logOut: protectedProcedure.use(VerifyAuthToken).mutation(({ ctx }) => {
+  logOut: protectedProcedure.mutation(({ ctx }) => {
     const { device, user } = ctx;
     DeviceService.delete(device.id, user.id);
     return {
@@ -49,4 +50,6 @@ export const AuthController = trpcRouter({
       message: "Logged out",
     };
   }),
+  devices: DeviceController,
+  users: UserController,
 });

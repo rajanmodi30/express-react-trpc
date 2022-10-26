@@ -1,5 +1,6 @@
 import { inferAsyncReturnType } from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
+import { initTRPC } from "@trpc/server";
 
 // created for each request
 export async function createContext({
@@ -36,3 +37,5 @@ export async function createContext({
 
 //Context that can be imported everywhere
 export type Context = inferAsyncReturnType<typeof createContext>;
+export const t = initTRPC.context<Context>().create();
+export const middleware = t.middleware;
