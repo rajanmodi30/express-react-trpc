@@ -45,7 +45,5 @@ export const validFileTypes = (type: UPLOAD_TYPES) => {
 export const STORAGE_PATH = env.app.root_dir + "/storage/uploads";
 
 export const defaultDateTimeFormat = (dateTime: Date) => {
-  return dayjs(dateTime).format("DD-MM-YYYY HH:mm");
+  return dayjs(dateTime).format("DD-MM-YYYY hh:mm");
 };
-
-export const defaultPagination;
