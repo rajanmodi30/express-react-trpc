@@ -15,7 +15,6 @@ import {
   GridValueGetterParams,
 } from "@mui/x-data-grid";
 import { useMemo, useState } from "react";
-import { toast } from "react-toastify";
 import { SearchAndExport } from "../components/SearchAndExport";
 import { useThemeStore } from "../store/theme";
 import { defaultDateTimeFormat } from "../utils";
@@ -31,14 +30,14 @@ export const Users = () => {
   const [sortType, setSortType] = useState("asc");
   const [search, setSearchTerm] = useState<string | undefined>(undefined);
 
-  const { data, isLoading, isSuccess, isError, error } =
-    trpc.auth.users.list.useQuery({
-      perPage,
-      page,
-      sortBy,
-      sortType,
-      search,
-    });
+  const { data, isLoading, isSuccess } = trpc.auth.users.list.useQuery({
+    perPage,
+    page,
+    sortBy,
+    sortType,
+    search,
+  });
+
   const handleSortModelChange = (data: any) => {
     if (data.length > 0) {
       setSortBy(data[0].field);
@@ -56,9 +55,6 @@ export const Users = () => {
       setSearchTerm(undefined);
     }
   };
-  if (isError) {
-    toast.error(error.message);
-  }
 
   useMemo(() => {
     if (isSuccess) {
@@ -173,3 +169,5 @@ export const Users = () => {
     </>
   );
 };
+
+// export default Users;

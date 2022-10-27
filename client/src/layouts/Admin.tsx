@@ -1,4 +1,4 @@
-import { Box, ThemeProvider, CssBaseline } from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";

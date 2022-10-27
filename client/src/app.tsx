@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState, forwardRef } from "react";
+import { Suspense, useState, forwardRef, useEffect } from "react";
 import { Loader } from "./components/Loader";
 import { RouterConfig } from "./router";
 import { useAuthStore } from "./store/auth";
@@ -9,22 +9,24 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import {
   Link as RouterLink,
   LinkProps as RouterLinkProps,
+  useNavigate,
 } from "react-router-dom";
 import { LinkProps } from "@mui/material/Link";
+import { toast } from "react-toastify";
+
+const LinkBehavior = forwardRef<
+  HTMLAnchorElement,
+  Omit<RouterLinkProps, "to"> & { href: RouterLinkProps["to"] }
+>((props, ref) => {
+  const { href, ...other } = props;
+  // Map href (MUI) -> to (react-router)
+  return <RouterLink ref={ref} to={href} {...other} />;
+});
 
 export const App = () => {
-  const { token } = useAuthStore();
-
-  const LinkBehavior = forwardRef<
-    HTMLAnchorElement,
-    Omit<RouterLinkProps, "to"> & { href: RouterLinkProps["to"] }
-  >((props, ref) => {
-    const { href, ...other } = props;
-    // Map href (MUI) -> to (react-router)
-    console.log("heree");
-    return <RouterLink ref={ref} to={href} {...other} />;
-  });
-
+  const { token, removeAll } = useAuthStore();
+  const [localToken, setLocalToken] = useState(token);
+  const navigate = useNavigate();
   const theme = createTheme({
     components: {
       MuiLink: {
@@ -42,12 +44,21 @@ export const App = () => {
 
   //TODO auto logout and logout right after login issues fix
   //TODO dashboard sidebar active route link
-  //TODO lazy loading
   //TODO trpc download trick
 
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
+        onError: (error: any) => {
+          toast.error(error.message);
+          if (
+            error.data.httpStatus !== undefined &&
+            error.data.httpStatus === 401
+          ) {
+            removeAll();
+            navigate("/");
+          }
+        },
         networkMode: "always",
         retry: false,
       },
@@ -58,25 +69,25 @@ export const App = () => {
     },
   });
 
+  useEffect(() => {
+    setLocalToken(token);
+  }, [token]);
+
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
         httpBatchLink({
           url: import.meta.env.VITE_API_BASE_URL,
-          headers() {
-            console.log("token here", token);
+          headers: () => {
+            console.log("token in headers", localToken);
             return {
-              Authorization: `Bearer ${token ?? ""}`,
+              Authorization: `Bearer ${localToken ?? ""}`,
             };
           },
         }),
       ],
     })
   );
-
-  useEffect(() => {
-    console.log("token", token);
-  }, [token]);
 
   return (
     <>

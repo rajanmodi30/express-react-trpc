@@ -2,8 +2,6 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -20,8 +18,7 @@ export const LogOut = () => {
     mutate();
   };
 
-  const { mutate, isSuccess, error, data, isError } =
-    trpc.auth.logOut.useMutation();
+  const { mutate, isSuccess, data } = trpc.auth.logOut.useMutation();
 
   if (isSuccess) {
     if (data.status) {
@@ -31,12 +28,6 @@ export const LogOut = () => {
     }
     removeAll();
     navigate("/");
-  } else if (isError) {
-    toast.error(error.message);
-    if (error.data?.code === "UNAUTHORIZED") {
-      removeAll();
-      navigate("/");
-    }
   }
 
   const [open, setOpen] = useState(false);

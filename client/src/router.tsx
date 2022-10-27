@@ -1,14 +1,23 @@
 import { Navigate, useRoutes } from "react-router-dom";
 import { lazyImport } from "./utils/lazyImport";
-import { Login } from "./pages/Login";
-import { Dashboard } from "./pages/Dashboard";
-import { Users } from "./pages/Users";
+import { useAuthStore } from "./store/auth";
 import { Admin } from "./layouts/Admin";
 import { Auth } from "./layouts/Auth";
-import { NotFound } from "./pages/NotFound";
-import { ForgotPassword } from "./pages/ForgotPassword";
-import { ResetPassword } from "./pages/ResetPassword";
-import { useAuthStore } from "./store/auth";
+const { ResetPassword } = lazyImport(
+  () => import("./pages/ResetPassword"),
+  "ResetPassword"
+);
+const { Users } = lazyImport(() => import("./pages/Users"), "Users");
+const { NotFound } = lazyImport(() => import("./pages/NotFound"), "NotFound");
+const { Login } = lazyImport(() => import("./pages/Login"), "Login");
+const { ForgotPassword } = lazyImport(
+  () => import("./pages/ForgotPassword"),
+  "ForgotPassword"
+);
+const { Dashboard } = lazyImport(
+  () => import("./pages/Dashboard"),
+  "Dashboard"
+);
 
 export const RouterConfig = () => {
   const { user } = useAuthStore();
