@@ -43,11 +43,11 @@ export const AddUser = () => {
     if (!data.status) {
       toast.error(data.message);
     } else {
-      // setValues({
-      //   firstName: "",
-      //   lastName: "",
-      //   email: "",
-      // });
+      setValues({
+        firstName: "",
+        lastName: "",
+        email: "",
+      });
       toast.success(data.message);
     }
   }
