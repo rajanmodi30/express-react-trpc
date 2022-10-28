@@ -1,8 +1,57 @@
 import { Box, Button, Container, Grid, Paper, TextField } from "@mui/material";
+import { useFormik } from "formik";
+import { toast } from "react-toastify";
+import { object, string } from "yup";
 import { trpc } from "../../utils/trpc";
 
+const addSchema = object().shape({
+  firstName: string().required(),
+  lastName: string().required(),
+  email: string().email().required(),
+});
+
 export const AddUser = () => {
-  const { mutate } = trpc.auth.users.store.useMutation();
+  const { mutate, isError, error, isSuccess, data } =
+    trpc.auth.users.store.useMutation();
+
+  const {
+    handleSubmit,
+    errors,
+    values,
+    isSubmitting,
+    touched,
+    handleChange,
+    setValues,
+  } = useFormik({
+    validationSchema: addSchema,
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+    },
+    onSubmit: async (values) => {
+      event?.preventDefault();
+      mutate(values);
+    },
+  });
+
+  if (isError) {
+    toast.error(error.message);
+  }
+
+  if (isSuccess) {
+    if (!data.status) {
+      toast.error(data.message);
+    } else {
+      // setValues({
+      //   firstName: "",
+      //   lastName: "",
+      //   email: "",
+      // });
+      toast.success(data.message);
+    }
+  }
+
   return (
     <>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -12,7 +61,7 @@ export const AddUser = () => {
               <Box
                 component="form"
                 noValidate
-                // onSubmit=
+                onSubmit={handleSubmit}
                 sx={{ mt: 1 }}
               >
                 <Grid container spacing={3}>
@@ -25,6 +74,10 @@ export const AddUser = () => {
                       fullWidth
                       autoComplete="given-name"
                       variant="standard"
+                      onChange={handleChange}
+                      value={values.firstName}
+                      error={touched.firstName && Boolean(errors.firstName)}
+                      helperText={touched.firstName && errors.firstName}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -36,6 +89,10 @@ export const AddUser = () => {
                       fullWidth
                       autoComplete="given-name"
                       variant="standard"
+                      onChange={handleChange}
+                      value={values.lastName}
+                      error={touched.lastName && Boolean(errors.lastName)}
+                      helperText={touched.lastName && errors.lastName}
                     />
                   </Grid>
                   <Grid item xs={12} sm={12}>
@@ -45,14 +102,19 @@ export const AddUser = () => {
                       name="email"
                       label="Email"
                       fullWidth
-                      autoComplete="given-name"
+                      autoComplete="email"
                       variant="standard"
+                      onChange={handleChange}
+                      value={values.email}
+                      error={touched.email && Boolean(errors.email)}
+                      helperText={touched.email && errors.email}
                     />
                   </Grid>
                 </Grid>
                 <Button
                   type="submit"
                   fullWidth
+                  disabled={isSubmitting}
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >

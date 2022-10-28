@@ -8,7 +8,6 @@ import {
   protectedProcedure,
   trpcRouter,
 } from "../../../../providers/trpcProviders";
-import { SignUpService } from "../../../../services/SignUpService";
 import { PaginationRequest } from "../../../requests/PaginationRequest";
 import { UserStoreRequest } from "../../../requests/UserStoreRequest";
 import {
@@ -125,7 +124,14 @@ export const UserController = trpcRouter({
     .input(UserStoreRequest)
     .mutation(async ({ input }) => {
       const { email } = input;
-      const userAlreadyExists = await SignUpService.checkIfUserExists(email);
+      const userAlreadyExists = await dbConnection.user.findFirst({
+        where: {
+          email,
+        },
+      });
+
+      console.log(userAlreadyExists);
+
       if (userAlreadyExists) {
         return {
           status: false,

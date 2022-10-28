@@ -14,19 +14,20 @@ import {
 import { LinkProps } from "@mui/material/Link";
 import { toast } from "react-toastify";
 
-const LinkBehavior = forwardRef<
-  HTMLAnchorElement,
-  Omit<RouterLinkProps, "to"> & { href: RouterLinkProps["to"] }
->((props, ref) => {
-  const { href, ...other } = props;
-  // Map href (MUI) -> to (react-router)
-  return <RouterLink ref={ref} to={href} {...other} />;
-});
-
 export const App = () => {
   const { token, removeAll } = useAuthStore();
   const [localToken, setLocalToken] = useState(token);
   const navigate = useNavigate();
+
+  const LinkBehavior = forwardRef<
+    HTMLAnchorElement,
+    Omit<RouterLinkProps, "to"> & { href: RouterLinkProps["to"] }
+  >((props, ref) => {
+    const { href, ...other } = props;
+    // Map href (MUI) -> to (react-router)
+    return <RouterLink ref={ref} to={href} {...other} />;
+  });
+
   const theme = createTheme({
     components: {
       MuiLink: {

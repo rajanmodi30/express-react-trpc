@@ -1,7 +1,6 @@
 import { Box, Button } from "@mui/material";
 import { GridToolbarQuickFilter } from "@mui/x-data-grid";
 import Typography from "@mui/material/Typography";
-import { LinkBehavior } from "../app";
 import { Link } from "react-router-dom";
 
 export const SearchAndExport = () => {
