@@ -1,12 +1,20 @@
 import { Prisma } from "@prisma/client";
-import { pagination } from "../../../../../utils/utils";
+import {
+  pagination,
+  randomPasswordGenerator,
+} from "../../../../../utils/utils";
 import dbConnection from "../../../../providers/db";
 import {
   protectedProcedure,
   trpcRouter,
 } from "../../../../providers/trpcProviders";
+import { SignUpService } from "../../../../services/SignUpService";
 import { PaginationRequest } from "../../../requests/PaginationRequest";
-import { UserListResponse } from "../../../responses/UserResponse";
+import { UserStoreRequest } from "../../../requests/UserStoreRequest";
+import {
+  UserResponse,
+  UserListResponse,
+} from "../../../responses/UserResponse";
 
 export const UserController = trpcRouter({
   list: protectedProcedure
@@ -111,6 +119,31 @@ export const UserController = trpcRouter({
         status: true,
         data: UserListResponse(users),
         pagination: pagination(totalCount, perPage, page),
+      };
+    }),
+  store: protectedProcedure
+    .input(UserStoreRequest)
+    .mutation(async ({ input }) => {
+      const { email } = input;
+      const userAlreadyExists = await SignUpService.checkIfUserExists(email);
+      if (userAlreadyExists) {
+        return {
+          status: false,
+          message: "User Exists",
+        };
+      }
+      const password = randomPasswordGenerator();
+      const user = await dbConnection.user.create({
+        data: {
+          ...input,
+          password,
+        },
+      });
+
+      return {
+        status: true,
+        message: "User Added",
+        user: UserResponse(user),
       };
     }),
 });
