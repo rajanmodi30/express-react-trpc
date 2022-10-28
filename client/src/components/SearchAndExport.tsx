@@ -1,6 +1,8 @@
 import { Box, Button } from "@mui/material";
 import { GridToolbarQuickFilter } from "@mui/x-data-grid";
 import Typography from "@mui/material/Typography";
+import { LinkBehavior } from "../app";
+import { Link } from "react-router-dom";
 
 export const SearchAndExport = () => {
   return (
@@ -13,7 +15,7 @@ export const SearchAndExport = () => {
       }}
     >
       <Typography variant="h5" sx={{ p: 1 }} accessKey="h1">
-        Users Lists
+        Users
       </Typography>
       <Box
         sx={{
@@ -34,6 +36,9 @@ export const SearchAndExport = () => {
         <Button sx={{ p: 1 }}>Excel</Button>
         <Button sx={{ p: 1 }}>CSV</Button>
         <Button sx={{ p: 1 }}>PDF</Button>
+        <Button component={Link} to="/admin/users/add" sx={{ p: 1 }}>
+          Add Users
+        </Button>
       </Box>
     </Box>
   );

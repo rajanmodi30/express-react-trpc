@@ -7,7 +7,8 @@ const { ResetPassword } = lazyImport(
   () => import("./pages/ResetPassword"),
   "ResetPassword"
 );
-const { Users } = lazyImport(() => import("./pages/Users"), "Users");
+const { Users } = lazyImport(() => import("./pages/Users/List"), "Users");
+const { AddUser } = lazyImport(() => import("./pages/Users/Add"), "AddUser");
 const { NotFound } = lazyImport(() => import("./pages/NotFound"), "NotFound");
 const { Login } = lazyImport(() => import("./pages/Login"), "Login");
 const { ForgotPassword } = lazyImport(
@@ -52,6 +53,10 @@ export const RouterConfig = () => {
         {
           path: "users",
           element: <Users />,
+        },
+        {
+          path: "users/add",
+          element: <AddUser />,
         },
       ],
     },

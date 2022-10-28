@@ -44,7 +44,7 @@ export const App = () => {
 
   //TODO auto logout and logout right after login issues fix
   //TODO dashboard sidebar active route link
-  //TODO trpc download trick
+  //TODO trpc download trick https://stackoverflow.com/questions/73715285/exceljs-download-xlsx-file-with-trpc-router
 
   const queryClient = new QueryClient({
     defaultOptions: {

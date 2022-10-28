@@ -6,10 +6,23 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import { LogOut } from "../components/LogOut";
 import { Link } from "@mui/material";
+import { NavLink } from "react-router-dom";
+
+let activeStyle = {
+  textDecoration: "underline",
+};
 
 export const mainListItems = (
   <Fragment>
-    <Link color="inherit" underline="none" href="/admin">
+    <Link
+      // component={NavLink}
+      //  style={({ isActive }) =>
+      //         isActive ? activeStyle : undefined
+      //       }
+      color="inherit"
+      underline="none"
+      href="/admin"
+    >
       <ListItemButton>
         <ListItemIcon>
           <DashboardIcon />
