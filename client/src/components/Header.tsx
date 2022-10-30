@@ -52,15 +52,13 @@ export const Header = () => {
         >
           <MenuIcon />
         </IconButton>
-        {/* <Typography
+        <Typography
           component="h1"
           variant="h6"
           color="inherit"
           noWrap
           sx={{ flexGrow: 1 }}
-        >
-          Dashboard
-        </Typography> */}
+        ></Typography>
         <IconButton color="inherit">
           <Badge badgeContent={4} color="secondary">
             <NotificationsIcon />
