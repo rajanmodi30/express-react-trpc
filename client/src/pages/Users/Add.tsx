@@ -1,56 +1,47 @@
 import { Box, Button, Container, Grid, Paper, TextField } from "@mui/material";
 import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { object, string } from "yup";
 import { trpc } from "../../utils/trpc";
 
-const addSchema = object().shape({
-  firstName: string().required(),
-  lastName: string().required(),
-  email: string().email().required(),
-});
-
 export const AddUser = () => {
-  const { mutate, isError, error, isSuccess, data } =
-    trpc.auth.users.store.useMutation();
-
-  const {
-    handleSubmit,
-    errors,
-    values,
-    isSubmitting,
-    touched,
-    handleChange,
-    setValues,
-  } = useFormik({
-    validationSchema: addSchema,
-    initialValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-    },
-    onSubmit: async (values) => {
-      event?.preventDefault();
-      mutate(values);
-    },
+  const { mutate } = trpc.auth.users.store.useMutation();
+  const addSchema = object().shape({
+    firstName: string().required(),
+    lastName: string().required(),
+    email: string().email().required(),
   });
 
-  if (isError) {
-    toast.error(error.message);
-  }
+  const navigate = useNavigate();
 
-  if (isSuccess) {
-    if (!data.status) {
-      toast.error(data.message);
-    } else {
-      setValues({
-        firstName: "",
-        lastName: "",
-        email: "",
-      });
-      toast.success(data.message);
-    }
-  }
+  const initialValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+  };
+
+  const { handleSubmit, errors, values, isSubmitting, touched, handleChange } =
+    useFormik({
+      validationSchema: addSchema,
+      initialValues: initialValues,
+      onSubmit: async (values) => {
+        event?.preventDefault();
+        mutate(values, {
+          onSuccess: (data) => {
+            if (!data.status) {
+              toast.error(data.message);
+            } else {
+              toast.success(data.message);
+              navigate("/admin/users");
+            }
+          },
+          onError: (error) => {
+            toast.error(error.message);
+          },
+        });
+      },
+    });
 
   return (
     <>

@@ -16,7 +16,6 @@ import { toast } from "react-toastify";
 
 export const App = () => {
   const { token, removeAll } = useAuthStore();
-  const [localToken, setLocalToken] = useState(token);
   const navigate = useNavigate();
 
   const LinkBehavior = forwardRef<
@@ -66,13 +65,19 @@ export const App = () => {
       mutations: {
         networkMode: "always",
         retry: false,
+        onError: (error: any) => {
+          toast.error(error.message);
+          if (
+            error.data.httpStatus !== undefined &&
+            error.data.httpStatus === 401
+          ) {
+            removeAll();
+            navigate("/");
+          }
+        },
       },
     },
   });
-
-  useEffect(() => {
-    setLocalToken(token);
-  }, [token]);
 
   const [trpcClient] = useState(() =>
     trpc.createClient({
@@ -80,9 +85,9 @@ export const App = () => {
         httpBatchLink({
           url: import.meta.env.VITE_API_BASE_URL,
           headers: () => {
-            console.log("token in headers", localToken);
+            console.log("token in headers", token);
             return {
-              Authorization: `Bearer ${localToken ?? ""}`,
+              Authorization: `Bearer ${token ?? ""}`,
             };
           },
         }),
