@@ -1,13 +1,14 @@
 import {
-  Box,
   Breadcrumbs,
   Button,
   Container,
+  Dialog,
+  DialogActions,
+  DialogTitle,
   Grid,
   IconButton,
   Link,
   Paper,
-  Toolbar,
   Typography,
 } from "@mui/material";
 import {
@@ -24,7 +25,7 @@ import { defaultDateTimeFormat } from "../../utils";
 import { trpc } from "../../utils/trpc";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const Users = () => {
   const { defaultPerPageCount, setDefaultPerPageCount, paginationOptions } =
@@ -35,14 +36,31 @@ export const Users = () => {
   const [sortBy, setSortBy] = useState("id");
   const [sortType, setSortType] = useState("asc");
   const [search, setSearchTerm] = useState<string | undefined>(undefined);
+  const [toDeleteId, setToDeleteId] = useState<number | null>(null);
+  const [open, setOpen] = useState(false);
 
-  const { data, isLoading, isSuccess } = trpc.auth.users.list.useQuery({
-    perPage,
-    page,
-    sortBy,
-    sortType,
-    search,
-  });
+  const handleClickOpen = (id: number) => {
+    setToDeleteId(id);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    refetch();
+    setToDeleteId(null);
+    setOpen(false);
+  };
+
+  const { data, isLoading, isSuccess, refetch } = trpc.auth.users.list.useQuery(
+    {
+      perPage,
+      page,
+      sortBy,
+      sortType,
+      search,
+    }
+  );
+
+  const { mutate } = trpc.auth.users.delete.useMutation();
 
   const handleSortModelChange = (data: any) => {
     if (data.length > 0) {
@@ -60,6 +78,28 @@ export const Users = () => {
     } else {
       setSearchTerm(undefined);
     }
+  };
+
+  const deleteUser = () => {
+    if (toDeleteId)
+      mutate(
+        {
+          id: toDeleteId,
+        },
+        {
+          onSuccess: (data) => {
+            if (data.status) {
+              toast.success(data.message);
+            } else {
+              toast.error(data.message);
+            }
+            handleClose();
+          },
+          onError: (error) => {
+            toast.error(error.message);
+          },
+        }
+      );
   };
 
   useMemo(() => {
@@ -113,7 +153,12 @@ export const Users = () => {
           >
             <EditIcon />
           </IconButton>
-          <IconButton aria-label="delete">
+          <IconButton
+            aria-label="delete"
+            onClick={() => {
+              handleClickOpen(params.row.id);
+            }}
+          >
             <DeleteIcon />
           </IconButton>
         </strong>
@@ -181,8 +226,23 @@ export const Users = () => {
           </Grid>
         </Grid>
       </Container>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure you want to Delete User?"}
+        </DialogTitle>
+
+        <DialogActions>
+          <Button onClick={handleClose}>No</Button>
+          <Button onClick={deleteUser} autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
-
-// export default Users;

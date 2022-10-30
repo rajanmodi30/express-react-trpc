@@ -213,4 +213,20 @@ export const UserController = trpcRouter({
         data: UserResponse(updatedUser),
       };
     }),
+  delete: protectedProcedure
+    .input(UserDetailsRequest)
+    .mutation(async ({ input }) => {
+      const { id } = input;
+
+      const UserDeleted = await dbConnection.user.delete({
+        where: {
+          id,
+        },
+      });
+
+      return {
+        status: true,
+        message: "User Deleted",
+      };
+    }),
 });
