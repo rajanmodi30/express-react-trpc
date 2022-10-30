@@ -10,5 +10,3 @@ export function lazyImport<
     [name]: lazy(() => factory().then((module) => ({ default: module[name] }))),
   });
 }
-
-// Usage
