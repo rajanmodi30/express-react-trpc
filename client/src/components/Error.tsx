@@ -13,15 +13,15 @@ export const Error = () => {
         }}
       >
         <Container maxWidth="md">
-          <Grid xs={12} container spacing={2}>
-            <Grid xs={6}>
+          <Grid container spacing={2}>
+            <Grid>
               <Typography variant="h1">404</Typography>
               <Typography variant="h6">Something Went Wrong</Typography>
               <Button component={Link} to="/" variant="contained">
                 Go Back To Home
               </Button>{" "}
             </Grid>
-            <Grid xs={6}>
+            <Grid>
               <img
                 src="https://cdn.pixabay.com/photo/2018/01/04/15/51/404-error-3060993_1280.png"
                 alt=""

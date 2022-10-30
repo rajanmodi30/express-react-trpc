@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
 import {
   pagination,
   randomPasswordGenerator,
@@ -9,6 +10,8 @@ import {
   trpcRouter,
 } from "../../../../providers/trpcProviders";
 import { PaginationRequest } from "../../../requests/PaginationRequest";
+import { UpdateUserRequest } from "../../../requests/UpdateUserRequest";
+import { UserDetailsRequest } from "../../../requests/UserDetailsRequest";
 import { UserStoreRequest } from "../../../requests/UserStoreRequest";
 import {
   UserResponse,
@@ -150,6 +153,64 @@ export const UserController = trpcRouter({
         status: true,
         message: "User Added",
         user: UserResponse(user),
+      };
+    }),
+  details: protectedProcedure
+    .input(UserDetailsRequest)
+    .query(async ({ input }) => {
+      const { id } = input;
+
+      const findUser = await dbConnection.user.findFirst({
+        where: {
+          id,
+        },
+      });
+
+      if (!findUser) {
+        throw new TRPCError({
+          message: "User not found",
+          code: "BAD_REQUEST",
+        });
+      }
+
+      return {
+        status: true,
+        data: UserResponse(findUser),
+      };
+    }),
+  update: protectedProcedure
+    .input(UpdateUserRequest)
+    .mutation(async ({ input }) => {
+      const { id, firstName, lastName, email } = input;
+
+      const findUser = await dbConnection.user.findFirst({
+        where: {
+          id,
+        },
+      });
+
+      if (!findUser) {
+        throw new TRPCError({
+          message: "User not found",
+          code: "BAD_REQUEST",
+        });
+      }
+
+      const updatedUser = await dbConnection.user.update({
+        where: {
+          id,
+        },
+        data: {
+          firstName,
+          lastName,
+          email,
+        },
+      });
+
+      return {
+        status: true,
+        message: "User updated",
+        data: UserResponse(updatedUser),
       };
     }),
 });

@@ -1,6 +1,7 @@
 import { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 
 export type User = {
+  id: number;
   firstName: string;
   lastName: string;
   fullName: string;

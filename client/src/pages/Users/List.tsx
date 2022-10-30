@@ -1,8 +1,10 @@
 import {
   Box,
   Breadcrumbs,
+  Button,
   Container,
   Grid,
+  IconButton,
   Link,
   Paper,
   Toolbar,
@@ -12,6 +14,7 @@ import {
   DataGrid,
   GridColDef,
   GridFilterModel,
+  GridRenderCellParams,
   GridValueGetterParams,
 } from "@mui/x-data-grid";
 import { useMemo, useState } from "react";
@@ -19,6 +22,9 @@ import { SearchAndExport } from "../../components/SearchAndExport";
 import { useThemeStore } from "../../store/theme";
 import { defaultDateTimeFormat } from "../../utils";
 import { trpc } from "../../utils/trpc";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { useNavigate } from "react-router-dom";
 
 export const Users = () => {
   const { defaultPerPageCount, setDefaultPerPageCount, paginationOptions } =
@@ -61,6 +67,7 @@ export const Users = () => {
       setTotalPages(data.pagination.total);
     }
   }, [data]);
+
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", type: "number" },
     { field: "firstName", headerName: "First name", type: "string" },
@@ -91,6 +98,24 @@ export const Users = () => {
       valueGetter: (params: GridValueGetterParams) =>
         defaultDateTimeFormat(params.row.updatedAt),
       flex: 1,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 1,
+      renderCell: (params: GridRenderCellParams<Date>) => (
+        <strong>
+          <IconButton
+            aria-label="delete"
+            href={`/admin/users/edit/${params.row.id}`}
+          >
+            <EditIcon />
+          </IconButton>
+          <IconButton aria-label="delete">
+            <DeleteIcon />
+          </IconButton>
+        </strong>
+      ),
     },
   ];
 
