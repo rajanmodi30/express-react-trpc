@@ -103,6 +103,8 @@ export const Users = () => {
       field: "actions",
       headerName: "Actions",
       flex: 1,
+      sortable: false,
+
       renderCell: (params: GridRenderCellParams<Date>) => (
         <strong>
           <IconButton
