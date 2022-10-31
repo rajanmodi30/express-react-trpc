@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
+import { t } from "i18next";
 import {
   pagination,
   randomPasswordGenerator,

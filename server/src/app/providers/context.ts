@@ -1,6 +1,7 @@
 import { inferAsyncReturnType } from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import { initTRPC } from "@trpc/server";
+import { t as lang } from "i18next";
 
 // created for each request
 export async function createContext({
@@ -30,10 +31,18 @@ export async function createContext({
     resetToken = req.body.resetToken;
   }
 
+  const translator = (string: string) => {
+    if (language !== undefined) {
+      req.i18n.changeLanguage(language);
+    }
+    return req.t(string);
+  };
+
   return {
     bearerToken,
     resetToken,
     language,
+    translator,
   };
 }
 

@@ -18,8 +18,9 @@ import { TRPCError } from "@trpc/server";
 export const ForgotPasswordController = trpcRouter({
   forgot: publicProcedure
     .input(ForgotPasswordRequest)
-    .mutation(async ({ input }) => {
+    .mutation(async ({ ctx, input }) => {
       const { email } = input;
+      const { translator } = ctx;
 
       const user = await dbConnection.user.findFirst({
         where: {
@@ -67,8 +68,7 @@ export const ForgotPasswordController = trpcRouter({
 
       return {
         status: true,
-        // message: req.t("user.forgot_password_reset_link"),
-        message: "Reset Password Link Sent",
+        message: translator("user.forgot_password_reset_link"),
       };
     }),
   checkResetToken: protectedProcedure
@@ -92,6 +92,7 @@ export const ForgotPasswordController = trpcRouter({
     .input(ResetPasswordRequest)
     .mutation(async ({ ctx, input }) => {
       const { resetToken, password } = input;
+      const { translator } = ctx;
       try {
         const user = await VerifyResetToken(resetToken);
         if (!user.password) {
@@ -105,8 +106,7 @@ export const ForgotPasswordController = trpcRouter({
         if (passwordsAreSame) {
           return {
             status: false,
-            message: "Same Passwords",
-            // message: req.t("user.reset_same_password"),
+            message: translator("user.reset_same_password"),
           };
         }
         await dbConnection.user.update({
@@ -123,8 +123,7 @@ export const ForgotPasswordController = trpcRouter({
 
         return {
           status: true,
-          message: "Password reset successfully",
-          // message: req.t("user.password_reset_success"),
+          message: translator("user.password_reset_success"),
         };
       } catch (error: any) {
         throw new TRPCError({

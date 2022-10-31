@@ -60,7 +60,6 @@ export const VerifyResetToken = async (resetToken: undefined | string) => {
 
   if (typeof decoded === "string") {
     throw "Link Expired";
-    // message: req.t("user.link_expired"),
   }
 
   const user = await dbConnection.user.findFirst({
@@ -71,7 +70,6 @@ export const VerifyResetToken = async (resetToken: undefined | string) => {
 
   if (!user) {
     throw "Link Expired";
-    // message: req.t("user.link_expired"),
   }
 
   return user;

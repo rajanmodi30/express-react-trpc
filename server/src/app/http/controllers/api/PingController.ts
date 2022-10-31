@@ -1,12 +1,11 @@
-import { Request, Response } from "express";
-import { logger } from "../../../providers/logger";
+import { publicProcedure, trpcRouter } from "../../../providers/trpcProviders";
 
-export class PingController {
-  public static async pong(req: Request, res: Response): Promise<Response> {
-    logger.debug("Server Pinged");
-    return res.json({
+export const PingController = trpcRouter({
+  pong: publicProcedure.query(({ ctx }) => {
+    const { translator } = ctx;
+    return {
       status: true,
-      message: req.t("pong"),
-    });
-  }
-}
+      message: translator("pong"),
+    };
+  }),
+});

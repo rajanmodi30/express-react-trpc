@@ -44,7 +44,6 @@ export const App = () => {
 
   //TODO auto logout and logout right after login issues fix
   //TODO dashboard sidebar active route link
-  //TODO localization solution
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -87,6 +86,7 @@ export const App = () => {
             console.log("token in headers", token);
             return {
               Authorization: `Bearer ${token ?? ""}`,
+              "Accept-Language": "en",
             };
           },
         }),

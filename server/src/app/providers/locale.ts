@@ -9,8 +9,8 @@ export class Locale {
       .use(middleware.LanguageDetector)
       .use(Backend)
       .init({
-        preload: ["en"],
-        supportedLngs: ["en"],
+        preload: ["en", "es"],
+        supportedLngs: ["en", "es"],
         lng: "en",
         saveMissing: true,
         nonExplicitSupportedLngs: false,
