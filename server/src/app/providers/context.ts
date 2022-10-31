@@ -12,6 +12,7 @@ export async function createContext({
   // This is just an example of something you'd might want to do in your ctx fn
 
   let bearerToken = req.headers["authorization"];
+  const language = req.headers["accept-language"];
   if (bearerToken) {
     bearerToken = bearerToken.split(" ")[1];
   }
@@ -32,6 +33,7 @@ export async function createContext({
   return {
     bearerToken,
     resetToken,
+    language,
   };
 }
 

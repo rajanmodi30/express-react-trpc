@@ -30,7 +30,7 @@ export const exportPDF = async (exportData: any[]) => {
   });
   const page = await browser.newPage();
   await page.setContent(templateHBS);
-
-  const buffer = await page.pdf(options);
-  return buffer;
+  const response = await page.pdf(options);
+  await browser.close();
+  return response;
 };

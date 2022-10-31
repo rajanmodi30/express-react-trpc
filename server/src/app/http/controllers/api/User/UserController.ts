@@ -154,7 +154,6 @@ export const UserController = trpcRouter({
       };
 
       const users = await dbConnection.user.findMany(findManyQuery);
-
       const buffer = await ExportUsersList(exportType, users);
 
       return {

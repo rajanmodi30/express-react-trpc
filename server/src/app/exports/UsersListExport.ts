@@ -2,13 +2,14 @@ import { User } from "@prisma/client";
 import { exportCSV } from "../../libs/export/exportCsv";
 import { exportPDF } from "../../libs/export/exportPdf";
 import { exportXLSX } from "../../libs/export/exportXlsx";
+import { EXPORT_TYPES } from "../../utils/types";
 import { defaultDateTimeFormat } from "../../utils/utils";
 
-export const ExportUsersList = async (type: string, data: User[]) => {
+export const ExportUsersList = async (type: EXPORT_TYPES, data: User[]) => {
   const users = DTO(data);
-  if (type === "pdf") {
+  if (type === EXPORT_TYPES.PDF) {
     return await exportPDF(users);
-  } else if (type === "xlsx") {
+  } else if (type === EXPORT_TYPES.XLSX) {
     return await exportXLSX(users);
   } else {
     return await exportCSV(users);
