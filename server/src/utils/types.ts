@@ -67,3 +67,9 @@ export type DeviceWithUser =
       user: User;
     })
   | null;
+
+export enum EXPORT_TYPES {
+  XLSX = "XLSX",
+  CSV = "CSV",
+  PDF = "PDF",
+}

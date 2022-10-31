@@ -4,11 +4,13 @@ import {
   pagination,
   randomPasswordGenerator,
 } from "../../../../../utils/utils";
+import { ExportUsersList } from "../../../../exports/UsersListExport";
 import dbConnection from "../../../../providers/db";
 import {
   protectedProcedure,
   trpcRouter,
 } from "../../../../providers/trpcProviders";
+import { ExportRequest } from "../../../requests/ExportRequest";
 import { PaginationRequest } from "../../../requests/PaginationRequest";
 import { UpdateUserRequest } from "../../../requests/UpdateUserRequest";
 import { UserDetailsRequest } from "../../../requests/UserDetailsRequest";
@@ -24,7 +26,6 @@ export const UserController = trpcRouter({
     .query(async ({ input, ctx }) => {
       const { user } = ctx;
       const { perPage, page, sortBy, sortType, search } = input;
-      console.log(perPage, page);
 
       let sort: any = {
         id: "desc",
@@ -36,21 +37,6 @@ export const UserController = trpcRouter({
           id: user.id,
         },
       };
-
-      // if (status !== undefined) {
-      //   if (status === "ALL") {
-      //     status = [ACCOUNT_STATUS.ACTIVE, ACCOUNT_STATUS.INACTIVE];
-      //   } else {
-      //     status = [status];
-      //   }
-
-      //   searchQuery = {
-      //     ...searchQuery,
-      //     status: {
-      //       in: status,
-      //     },
-      //   };
-      // }
 
       if (
         search !== undefined &&
@@ -95,32 +81,86 @@ export const UserController = trpcRouter({
         orderBy: sort,
       };
 
-      // if (exportType === undefined) {
       findManyQuery = {
         ...findManyQuery,
         skip: perPage * page,
         take: perPage,
       };
-      // }
 
       const users: any =
         totalCount > 0 ? await dbConnection.user.findMany(findManyQuery) : [];
 
-      // if (exportType !== undefined) {
-      //   const buffer = await ExportUsersList(exportType, users);
-
-      //   res.statusCode = 200;
-      //   res.setHeader(
-      //     "Content-Disposition",
-      //     `attachment; filename="export.${exportType}"`
-      //   );
-      //   res.setHeader("Content-Type", `${exportContentType(exportType)}`);
-      //   return res.send(buffer);
-      // }
       return {
         status: true,
         data: UserListResponse(users),
         pagination: pagination(totalCount, perPage, page),
+      };
+    }),
+  download: protectedProcedure
+    .input(ExportRequest)
+    .mutation(async ({ input, ctx }) => {
+      const { user } = ctx;
+      const { sortBy, sortType, search, exportType } = input;
+
+      let sort: any = {
+        id: "desc",
+      };
+
+      let searchQuery: Prisma.UserWhereInput = {
+        deletedAt: null,
+        NOT: {
+          id: user.id,
+        },
+      };
+
+      if (
+        search !== undefined &&
+        typeof search === "string" &&
+        search.length !== 0
+      ) {
+        searchQuery = {
+          ...searchQuery,
+          AND: {
+            OR: [
+              {
+                firstName: {
+                  contains: search,
+                },
+              },
+              {
+                lastName: {
+                  contains: search,
+                },
+              },
+              {
+                email: {
+                  contains: search,
+                },
+              },
+            ],
+          },
+        };
+      }
+
+      if (sortBy !== undefined) {
+        sort = {
+          [sortBy]: sortType,
+        };
+      }
+
+      let findManyQuery: Prisma.UserFindManyArgs = {
+        where: searchQuery,
+        orderBy: sort,
+      };
+
+      const users = await dbConnection.user.findMany(findManyQuery);
+
+      const buffer = await ExportUsersList(exportType, users);
+
+      return {
+        status: true,
+        message: "",
+        bufferData: buffer.toString("base64"),
       };
     }),
   store: protectedProcedure
@@ -136,11 +176,12 @@ export const UserController = trpcRouter({
       console.log(userAlreadyExists);
 
       if (userAlreadyExists) {
-        return {
-          status: false,
+        throw new TRPCError({
           message: "User Exists",
-        };
+          code: "BAD_REQUEST",
+        });
       }
+
       const password = randomPasswordGenerator();
       const user = await dbConnection.user.create({
         data: {
@@ -218,7 +259,7 @@ export const UserController = trpcRouter({
     .mutation(async ({ input }) => {
       const { id } = input;
 
-      const UserDeleted = await dbConnection.user.delete({
+      await dbConnection.user.delete({
         where: {
           id,
         },

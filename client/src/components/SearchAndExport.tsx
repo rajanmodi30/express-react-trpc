@@ -2,8 +2,9 @@ import { Box, Button } from "@mui/material";
 import { GridToolbarQuickFilter } from "@mui/x-data-grid";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
+import { EXPORT_TYPES, SearchAndDownloadProps } from "../utils/types";
 
-export const SearchAndExport = () => {
+export const SearchAndExport = (props: SearchAndDownloadProps) => {
   return (
     <Box
       sx={{
@@ -14,7 +15,7 @@ export const SearchAndExport = () => {
       }}
     >
       <Typography variant="h5" sx={{ p: 1 }} accessKey="h1">
-        Users
+        {props.name}
       </Typography>
       <Box
         sx={{
@@ -32,12 +33,35 @@ export const SearchAndExport = () => {
               .filter((value) => value !== "")
           }
         />
-        <Button sx={{ p: 1 }}>Excel</Button>
-        <Button sx={{ p: 1 }}>CSV</Button>
-        <Button sx={{ p: 1 }}>PDF</Button>
-        <Button component={Link} to="/admin/users/add" sx={{ p: 1 }}>
-          Add Users
+        <Button
+          onClick={() => {
+            props.handleDownloadMethod(EXPORT_TYPES.XLSX);
+          }}
+          sx={{ p: 1 }}
+        >
+          Excel
         </Button>
+        <Button
+          onClick={() => {
+            props.handleDownloadMethod(EXPORT_TYPES.CSV);
+          }}
+          sx={{ p: 1 }}
+        >
+          CSV
+        </Button>
+        <Button
+          onClick={() => {
+            props.handleDownloadMethod(EXPORT_TYPES.PDF);
+          }}
+          sx={{ p: 1 }}
+        >
+          PDF
+        </Button>
+        {props.addLink !== undefined && (
+          <Button component={Link} to={props.addLink} sx={{ p: 1 }}>
+            Add {props.name}
+          </Button>
+        )}
       </Box>
     </Box>
   );

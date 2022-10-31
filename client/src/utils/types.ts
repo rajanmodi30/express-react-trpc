@@ -38,6 +38,18 @@ export enum DEVICES {
   WEB = "WEB",
 }
 
+export enum EXPORT_TYPES {
+  XLSX = "XLSX",
+  CSV = "CSV",
+  PDF = "PDF",
+}
+
+export enum EXPORT_TYPE_MIME {
+  XLSX = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,",
+  CSV = "data:text/csv;base64,",
+  PDF = "data:application/pdf;base64,",
+}
+
 export interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
@@ -45,3 +57,9 @@ export interface AppBarProps extends MuiAppBarProps {
 export interface ThemeContextInterface {
   drawerWidth: number;
 }
+
+export type SearchAndDownloadProps = {
+  name: string;
+  addLink?: string;
+  handleDownloadMethod: (exportType: EXPORT_TYPES) => void;
+};

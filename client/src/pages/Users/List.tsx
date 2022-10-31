@@ -26,6 +26,7 @@ import { trpc } from "../../utils/trpc";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { toast } from "react-toastify";
+import { EXPORT_TYPES, EXPORT_TYPE_MIME } from "../../utils/types";
 
 export const Users = () => {
   const { defaultPerPageCount, setDefaultPerPageCount, paginationOptions } =
@@ -38,6 +39,34 @@ export const Users = () => {
   const [search, setSearchTerm] = useState<string | undefined>(undefined);
   const [toDeleteId, setToDeleteId] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
+
+  const downloadMutation = trpc.auth.users.download.useMutation();
+
+  const handleDownloadMethod = (value: EXPORT_TYPES) => {
+    downloadMutation.mutate(
+      {
+        exportType: value,
+        sortType: undefined,
+        sortBy: undefined,
+        search: undefined,
+      },
+      {
+        onSuccess: (data) => {
+          if (!data.status) return;
+          const mediaType = EXPORT_TYPE_MIME[value];
+          const downloadLink = document.createElement("a");
+          downloadLink.download = "Blah";
+          downloadLink.innerHTML = "Download File";
+          downloadLink.href = `${mediaType}${data.bufferData}`;
+          downloadLink.click();
+          // window.location.href = `${mediaType}${data.bufferData}`;
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      }
+    );
+  };
 
   const handleClickOpen = (id: number) => {
     setToDeleteId(id);
@@ -215,6 +244,13 @@ export const Users = () => {
                 }}
                 components={{
                   Toolbar: SearchAndExport,
+                }}
+                componentsProps={{
+                  toolbar: {
+                    name: "Users",
+                    addLink: "/admin/users/add",
+                    handleDownloadMethod: handleDownloadMethod,
+                  },
                 }}
                 onPageSizeChange={(newPageSize) => {
                   setPerPage(newPageSize);
