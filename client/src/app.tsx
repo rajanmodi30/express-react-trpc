@@ -43,6 +43,7 @@ export const App = () => {
   });
 
   //TODO dashboard sidebar active route link
+  //TODO lazy loading issue fix
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
