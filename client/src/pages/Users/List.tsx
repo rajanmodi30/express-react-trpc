@@ -28,17 +28,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import { toast } from "react-toastify";
 import { EXPORT_TYPES, EXPORT_TYPE_MIME } from "../../utils/types";
 
-function dataURItoBlob(dataURI: any) {
-  const byteString = window.atob(dataURI);
-  const arrayBuffer = new ArrayBuffer(byteString.length);
-  const int8Array = new Uint8Array(arrayBuffer);
-  for (let i = 0; i < byteString.length; i++) {
-    int8Array[i] = byteString.charCodeAt(i);
-  }
-  const blob = new Blob([int8Array], { type: "application/pdf" });
-  return blob;
-}
-
 export const Users = () => {
   const { defaultPerPageCount, setDefaultPerPageCount, paginationOptions } =
     useThemeStore();
@@ -65,24 +54,11 @@ export const Users = () => {
         onSuccess: (data) => {
           if (!data.status) return;
           const mediaType = EXPORT_TYPE_MIME[value];
-          // const downloadurl = window.URL.createObjectURL(
-          //   new Blob([data], {
-          //     type: "application/pdf",
-          //   })
-          // );
-
-          // const blob = dataURItoBlob(data.bufferData);
-          // const url = URL.createObjectURL(blob);
-          console.log(data.bufferData);
-          console.log("mediaType", mediaType);
           const downloadLink = document.createElement("a");
           downloadLink.download = "Blah";
           downloadLink.innerHTML = "Download File";
           downloadLink.href = `${mediaType}${data.bufferData}`;
-          // downloadLink.href = url;
-          // downloadLink.href = downloadurl;
           downloadLink.click();
-          // window.location.href = `${mediaType}${data.bufferData}`;
         },
         onError: (error) => {
           toast.error(error.message);

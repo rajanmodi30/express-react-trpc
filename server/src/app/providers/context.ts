@@ -1,7 +1,6 @@
 import { inferAsyncReturnType } from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import { initTRPC } from "@trpc/server";
-import { t as lang } from "i18next";
 
 // created for each request
 export async function createContext({

@@ -53,7 +53,6 @@ export const Login = () => {
           onSuccess: (data) => {
             const { status, message, accessToken } = data;
             const user = data.data;
-            console.log(status, message, accessToken, user);
             if (!status) {
               toast.error(message);
             } else {

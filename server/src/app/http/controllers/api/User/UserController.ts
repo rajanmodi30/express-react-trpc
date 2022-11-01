@@ -173,8 +173,6 @@ export const UserController = trpcRouter({
         },
       });
 
-      console.log(userAlreadyExists);
-
       if (userAlreadyExists) {
         throw new TRPCError({
           message: "User Exists",

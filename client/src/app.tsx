@@ -1,4 +1,4 @@
-import { Suspense, useState, forwardRef, useEffect } from "react";
+import { Suspense, forwardRef } from "react";
 import { Loader } from "./components/Loader";
 import { RouterConfig } from "./router";
 import { useAuthStore } from "./store/auth";
@@ -42,7 +42,6 @@ export const App = () => {
     },
   });
 
-  //TODO logout right after login issues fix
   //TODO dashboard sidebar active route link
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -77,22 +76,19 @@ export const App = () => {
     },
   });
 
-  const [trpcClient] = useState(() =>
-    trpc.createClient({
-      links: [
-        httpBatchLink({
-          url: import.meta.env.VITE_API_BASE_URL,
-          headers: () => {
-            console.log("token in headers", token);
-            return {
-              Authorization: `Bearer ${token ?? ""}`,
-              "Accept-Language": "en",
-            };
-          },
-        }),
-      ],
-    })
-  );
+  const trpcClient = trpc.createClient({
+    links: [
+      httpBatchLink({
+        url: import.meta.env.VITE_API_BASE_URL,
+        headers: () => {
+          return {
+            Authorization: `Bearer ${token}`,
+            "Accept-Language": "en",
+          };
+        },
+      }),
+    ],
+  });
 
   return (
     <>
