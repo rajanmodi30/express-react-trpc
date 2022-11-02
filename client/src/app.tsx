@@ -42,37 +42,27 @@ export const App = () => {
     },
   });
 
+  const apiErrorHandler = (error: any) => {
+    toast.error(error.message);
+    if (error.data.httpStatus !== undefined && error.data.httpStatus === 401) {
+      removeAll();
+      navigate("/");
+    }
+  };
+
   //TODO dashboard sidebar active route link
   //TODO lazy loading issue fix
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        onError: (error: any) => {
-          toast.error(error.message);
-          if (
-            error.data.httpStatus !== undefined &&
-            error.data.httpStatus === 401
-          ) {
-            removeAll();
-            navigate("/");
-          }
-        },
+        onError: apiErrorHandler,
         networkMode: "always",
         retry: false,
       },
       mutations: {
         networkMode: "always",
         retry: false,
-        onError: (error: any) => {
-          toast.error(error.message);
-          if (
-            error.data.httpStatus !== undefined &&
-            error.data.httpStatus === 401
-          ) {
-            removeAll();
-            navigate("/");
-          }
-        },
+        onError: apiErrorHandler,
       },
     },
   });
