@@ -1,5 +1,4 @@
-import { Suspense, forwardRef } from "react";
-import { Loader } from "./components/Loader";
+import { forwardRef } from "react";
 import { RouterConfig } from "./router";
 import { useAuthStore } from "./store/auth";
 import { trpc } from "./utils/trpc";
@@ -51,7 +50,6 @@ export const App = () => {
   };
 
   //TODO dashboard sidebar active route link
-  //TODO lazy loading issue fix
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -83,15 +81,13 @@ export const App = () => {
 
   return (
     <>
-      <Suspense fallback={<Loader />}>
-        <trpc.Provider client={trpcClient} queryClient={queryClient}>
-          <QueryClientProvider client={queryClient}>
-            <ThemeProvider theme={theme}>
-              <RouterConfig />
-            </ThemeProvider>
-          </QueryClientProvider>
-        </trpc.Provider>
-      </Suspense>
+      <trpc.Provider client={trpcClient} queryClient={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider theme={theme}>
+            <RouterConfig />
+          </ThemeProvider>
+        </QueryClientProvider>
+      </trpc.Provider>
     </>
   );
 };

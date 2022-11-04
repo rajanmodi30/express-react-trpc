@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { App } from "./app";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
+  <StrictMode>
     <ErrorBoundary FallbackComponent={Error}>
       <BrowserRouter>
         <ToastContainer
@@ -25,5 +25,5 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <App />
       </BrowserRouter>
     </ErrorBoundary>
-  </React.StrictMode>
+  </StrictMode>
 );

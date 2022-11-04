@@ -1,5 +1,7 @@
 import { CssBaseline, Grid, Paper } from "@mui/material";
+import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
+import { Loader } from "../components/Loader";
 
 export const Auth = () => {
   return (
@@ -23,7 +25,9 @@ export const Auth = () => {
           }}
         />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <Outlet />
+          <Suspense fallback={<Loader />}>
+            <Outlet />
+          </Suspense>
         </Grid>
       </Grid>
     </>
