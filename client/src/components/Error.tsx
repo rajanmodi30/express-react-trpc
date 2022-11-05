@@ -1,7 +1,15 @@
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { FallbackProps } from "react-error-boundary";
 
-export const Error = () => {
+export const Error = (ErrorBoundaryFallBack: FallbackProps) => {
+  const navigate = useNavigate();
+
+  const resetAndNavigate = () => {
+    ErrorBoundaryFallBack.resetErrorBoundary;
+    navigate("");
+  };
+
   return (
     <>
       <Box
@@ -16,9 +24,10 @@ export const Error = () => {
           <Grid xs={12} container>
             <Grid item xs={12}>
               <Typography variant="h3">OOPS Something Went Wrong</Typography>
+              <pre>{ErrorBoundaryFallBack.error.message}</pre>
             </Grid>
             <Grid item xs={12}>
-              <Button href="/" variant="contained">
+              <Button onClick={resetAndNavigate} variant="contained">
                 Go Back To Home
               </Button>
             </Grid>

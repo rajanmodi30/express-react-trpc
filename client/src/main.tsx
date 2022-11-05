@@ -7,9 +7,13 @@ import { Error } from "./components/Error";
 import "react-toastify/dist/ReactToastify.css";
 import { App } from "./app";
 
+const myErrorHandler = (error: Error, info: { componentStack: string }) => {
+  //do something for error
+};
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <StrictMode>
-    <ErrorBoundary FallbackComponent={Error}>
+    <ErrorBoundary FallbackComponent={Error} onError={myErrorHandler}>
       <BrowserRouter>
         <ToastContainer
           position="top-right"
