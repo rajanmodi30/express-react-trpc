@@ -19,7 +19,7 @@ export const env = {
     api_prefix: getOsEnv("API_PREFIX"),
     pagination_limit: toNumber(getOsEnv("PAGINATION_LIMIT")),
     api_rate_limit: toNumber(getOsEnv("API_RATE_LIMIT")),
-    root_dir: getOsEnv("APP_ENV") === "production" ? "dist" : "src",
+    root_dir: getOsEnv("APP_ENV") === "production" ? "" : "src",
     user_uploaded_content_path: getOsEnv("USER_UPLOADED_CONTENT_PATH"),
     client_url: getOsEnv("CLIENT_APP_URL"),
   },
