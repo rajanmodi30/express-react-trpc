@@ -7,7 +7,7 @@ export const Error = (ErrorBoundaryFallBack: FallbackProps) => {
 
   const resetAndNavigate = () => {
     ErrorBoundaryFallBack.resetErrorBoundary;
-    navigate("");
+    navigate("/");
   };
 
   return (

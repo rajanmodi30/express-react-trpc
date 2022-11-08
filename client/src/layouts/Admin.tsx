@@ -2,7 +2,7 @@ import { Box, CssBaseline, Toolbar } from "@mui/material";
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 import { Footer } from "../components/Footer";
-import { Header } from "../components/Header";
+import { TopBar } from "../components/TopBar";
 import { Loader } from "../components/Loader";
 import { Sidebar } from "../components/Sidebar";
 import { AdminThemeContext, themeDefaults } from "../contexts/AdminContext";
@@ -12,7 +12,7 @@ export const Admin = () => {
     <AdminThemeContext.Provider value={themeDefaults}>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <Header />
+        <TopBar />
         <Sidebar />
         <Box
           component="main"

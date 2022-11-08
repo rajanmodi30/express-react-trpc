@@ -11,7 +11,7 @@ import { AdminThemeContext } from "../contexts/AdminContext";
 import { AppBarProps } from "../utils/types";
 import { useThemeStore } from "../store/theme";
 
-export const Header = () => {
+export const TopBar = () => {
   const { openToggleBar, toggleOpenBar } = useThemeStore();
   const { drawerWidth } = useContext(AdminThemeContext);
 
@@ -37,7 +37,7 @@ export const Header = () => {
     <AppBar position="absolute" open={openToggleBar}>
       <Toolbar
         sx={{
-          pr: "24px", // keep right padding when drawer closed
+          pr: "24px",
         }}
       >
         <IconButton
