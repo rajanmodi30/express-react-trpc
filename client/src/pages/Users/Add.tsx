@@ -1,4 +1,14 @@
-import { Box, Button, Container, Grid, Paper, TextField } from "@mui/material";
+import {
+  Box,
+  Breadcrumbs,
+  Button,
+  Container,
+  Grid,
+  Link,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -45,6 +55,21 @@ export const AddUser = () => {
 
   return (
     <>
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Paper sx={{ display: "flex", p: 2, flexDirection: "column" }}>
+              <Breadcrumbs aria-label="breadcrumb">
+                <Link underline="hover" color="inherit" href="/admin/users">
+                  Users
+                </Link>
+
+                <Typography color="text.primary">Add </Typography>
+              </Breadcrumbs>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Container>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={3}>
           <Grid item xs={12}>

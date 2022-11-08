@@ -5,6 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Link } from "@mui/material";
 import { useAuthStore } from "../store/auth";
 import { trpc } from "../utils/trpc";
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
@@ -41,12 +42,12 @@ export const LogOut = () => {
   };
 
   return (
-    <div>
+    <>
       <ListItemButton onClick={handleClickOpen}>
         <ListItemIcon>
           <LoginIcon />
         </ListItemIcon>
-        <ListItemText primary="Log Out" />
+        <ListItemText color="primary" primary="Log Out" />
       </ListItemButton>
       <Dialog
         open={open}
@@ -65,6 +66,6 @@ export const LogOut = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 };

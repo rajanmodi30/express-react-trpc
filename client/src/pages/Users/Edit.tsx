@@ -1,4 +1,13 @@
-import { Button, Container, Grid, Paper, TextField } from "@mui/material";
+import {
+  Breadcrumbs,
+  Button,
+  Container,
+  Grid,
+  Link,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import { useFormik } from "formik";
 import { useEffect } from "react";
@@ -21,7 +30,13 @@ export const EditUser = () => {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Paper sx={{ display: "flex", p: 2, flexDirection: "column" }}>
-              Edit User
+              <Breadcrumbs aria-label="breadcrumb">
+                <Link underline="hover" color="inherit" href="/admin/users">
+                  Users
+                </Link>
+
+                <Typography color="text.primary">Edit </Typography>
+              </Breadcrumbs>
             </Paper>
           </Grid>
         </Grid>

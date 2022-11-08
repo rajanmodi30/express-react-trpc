@@ -140,7 +140,7 @@ export const Users = () => {
     { field: "id", headerName: "ID", type: "number" },
     { field: "firstName", headerName: "First name", type: "string" },
     { field: "lastName", headerName: "Last name", type: "string" },
-    { field: "email", headerName: "Email", type: "string", flex: 1 },
+    { field: "email", headerName: "Email", type: "string" },
     {
       field: "fullName",
       headerName: "Full Name",
@@ -170,9 +170,7 @@ export const Users = () => {
     {
       field: "actions",
       headerName: "Actions",
-      flex: 1,
       sortable: false,
-
       renderCell: (params: GridRenderCellParams<Date>) => (
         <strong>
           <IconButton
@@ -201,16 +199,6 @@ export const Users = () => {
           <Grid item xs={12}>
             <Paper sx={{ display: "flex", p: 2, flexDirection: "column" }}>
               <Breadcrumbs aria-label="breadcrumb">
-                <Link underline="hover" color="inherit" href="/">
-                  MUI
-                </Link>
-                <Link
-                  underline="hover"
-                  color="inherit"
-                  href="/material-ui/getting-started/installation/"
-                >
-                  Core
-                </Link>
                 <Typography color="text.primary">Users </Typography>
               </Breadcrumbs>
             </Paper>

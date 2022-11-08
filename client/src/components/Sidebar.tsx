@@ -1,7 +1,7 @@
 import { Divider, IconButton, List, Toolbar } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import { styled } from "@mui/material/styles";
-import { mainListItems } from "../pages/MenuItems";
+import { SideBarMenuItems } from "../pages/SideBarMenuItems";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { AdminThemeContext } from "../contexts/AdminContext";
 import { useContext } from "react";
@@ -52,7 +52,9 @@ export const Sidebar = () => {
         </IconButton>
       </Toolbar>
       <Divider />
-      <List component="nav">{mainListItems}</List>
+      <List component="nav">
+        <SideBarMenuItems />
+      </List>
     </Drawer>
   );
 };

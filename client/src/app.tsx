@@ -13,6 +13,24 @@ import {
 import { LinkProps } from "@mui/material/Link";
 import { toast } from "react-toastify";
 
+declare module "@mui/material/styles" {
+  interface Palette {
+    download: Palette["primary"];
+  }
+
+  // allow configuration using `createTheme`
+  interface PaletteOptions {
+    download?: PaletteOptions["primary"];
+  }
+}
+
+// Update the Button's color prop options
+declare module "@mui/material/Button" {
+  interface ButtonPropsColorOverrides {
+    download: true;
+  }
+}
+
 export const App = () => {
   const { token, removeAll } = useAuthStore();
   const navigate = useNavigate();
@@ -27,6 +45,18 @@ export const App = () => {
   });
 
   const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#6c3fb5",
+      },
+      secondary: {
+        main: "#f50057",
+      },
+      download: {
+        main: "#ACB3BD",
+        contrastText: "#000",
+      },
+    },
     components: {
       MuiLink: {
         defaultProps: {
@@ -49,7 +79,7 @@ export const App = () => {
     }
   };
 
-  //TODO dashboard sidebar active route link
+  //TODO add logo in sidebar and menu in top bat for user settings and profile and also notifications
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
