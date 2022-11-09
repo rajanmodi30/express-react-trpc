@@ -11,26 +11,25 @@ import { AdminThemeContext } from "../contexts/AdminContext";
 import { AppBarProps } from "../utils/types";
 import { useThemeStore } from "../store/theme";
 import { Avatar, Box, Menu, MenuItem, Tooltip } from "@mui/material";
-
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })<AppBarProps>(({ theme, open }) => ({
-  transition: theme.transitions.create(["margin", "width"], {
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
+    marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
 }));
-
 export const TopBar = () => {
   const { openToggleBar, toggleOpenBar } = useThemeStore();
   const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -45,21 +44,36 @@ export const TopBar = () => {
     setAnchorElUser(null);
   };
   return (
-    <AppBar position="fixed" open={openToggleBar}>
-      <Toolbar>
+    <AppBar position="absolute" open={openToggleBar}>
+      <Toolbar
+        sx={{
+          pr: "24px",
+        }}
+      >
         <IconButton
+          edge="start"
           color="inherit"
           aria-label="open drawer"
           onClick={toggleOpenBar}
-          edge="start"
-          sx={{ mr: 2, ...(openToggleBar && { display: "none" }) }}
+          sx={{
+            marginRight: "36px",
+            ...(openToggleBar && { display: "none" }),
+          }}
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" noWrap component="div">
-          Persistent drawer
-        </Typography>
-
+        <Typography
+          component="h1"
+          variant="h6"
+          color="inherit"
+          noWrap
+          sx={{ flexGrow: 1 }}
+        ></Typography>
+        <IconButton color="inherit">
+          <Badge badgeContent={4} color="secondary">
+            <NotificationsIcon />
+          </Badge>
+        </IconButton>
         <Box sx={{ flexGrow: 0 }}>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
