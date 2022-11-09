@@ -102,11 +102,6 @@ export const TopBar = () => {
               </MenuItem>
             ))}
           </Menu>
-          {/* <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton> */}
         </Box>
       </Toolbar>
     </AppBar>
