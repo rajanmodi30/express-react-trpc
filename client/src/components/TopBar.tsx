@@ -1,16 +1,15 @@
 import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
 import MenuIcon from "@mui/icons-material/Menu";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import Badge from "@mui/material/Badge";
-import { useContext, useState } from "react";
-import { AdminThemeContext } from "../contexts/AdminContext";
+import { useState } from "react";
 import { AppBarProps } from "../utils/types";
 import { useThemeStore } from "../store/theme";
-import { Avatar, Box, Menu, MenuItem, Tooltip } from "@mui/material";
+import { ProfileMenu } from "./ProfileMenu";
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -30,19 +29,10 @@ const AppBar = styled(MuiAppBar, {
     }),
   }),
 }));
+
 export const TopBar = () => {
   const { openToggleBar, toggleOpenBar } = useThemeStore();
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
   return (
     <AppBar position="absolute" open={openToggleBar}>
       <Toolbar
@@ -69,40 +59,12 @@ export const TopBar = () => {
           noWrap
           sx={{ flexGrow: 1 }}
         ></Typography>
-        <IconButton color="inherit">
+        {/* <IconButton color="inherit">
           <Badge badgeContent={4} color="secondary">
             <NotificationsIcon />
           </Badge>
-        </IconButton>
-        <Box sx={{ flexGrow: 0 }}>
-          <Tooltip title="Open settings">
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-            </IconButton>
-          </Tooltip>
-          <Menu
-            sx={{ mt: "45px" }}
-            id="menu-appbar"
-            anchorEl={anchorElUser}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            open={Boolean(anchorElUser)}
-            onClose={handleCloseUserMenu}
-          >
-            {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">{setting}</Typography>
-              </MenuItem>
-            ))}
-          </Menu>
-        </Box>
+        </IconButton> */}
+        <ProfileMenu />
       </Toolbar>
     </AppBar>
   );

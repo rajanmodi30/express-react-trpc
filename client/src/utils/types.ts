@@ -54,10 +54,6 @@ export interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
 
-export interface ThemeContextInterface {
-  drawerWidth: number;
-}
-
 export type SearchAndDownloadProps = {
   name: string;
   addLink?: string;

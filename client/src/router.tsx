@@ -3,6 +3,7 @@ import { lazyImport } from "./utils/lazyImport";
 import { useAuthStore } from "./store/auth";
 import { Admin } from "./layouts/Admin";
 import { Auth } from "./layouts/Auth";
+import { ChangePassword } from "./pages/Users/ChangePassword";
 const { ResetPassword } = lazyImport(
   () => import("./pages/ResetPassword"),
   "ResetPassword"
@@ -58,6 +59,10 @@ export const RouterConfig = () => {
         {
           path: "users/add",
           element: <AddUser />,
+        },
+        {
+          path: "users/change-password",
+          element: <ChangePassword />,
         },
         {
           path: "users/edit/:id",

@@ -1,16 +1,14 @@
 import { Divider, IconButton, List, Toolbar } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import { styled } from "@mui/material/styles";
-import { SideBarMenuItems } from "../pages/SideBarMenuItems";
+import { SideBarMenuItems } from "./SideBarMenuItems";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { AdminThemeContext } from "../contexts/AdminContext";
-import { useContext } from "react";
 import { useThemeStore } from "../store/theme";
-// import Logo from "/eww-logo.png";
 import Logo from "/logo.png";
+
 export const Sidebar = () => {
   const { openToggleBar, toggleOpenBar } = useThemeStore();
-  const { drawerWidth } = useContext(AdminThemeContext);
+  const drawerWidth = 240;
 
   const Drawer = styled(MuiDrawer, {
     shouldForwardProp: (prop) => prop !== "open",

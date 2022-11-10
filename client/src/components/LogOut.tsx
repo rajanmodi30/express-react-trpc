@@ -5,7 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Link } from "@mui/material";
+import { Link, MenuItem, Typography } from "@mui/material";
 import { useAuthStore } from "../store/auth";
 import { trpc } from "../utils/trpc";
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
@@ -43,12 +43,9 @@ export const LogOut = () => {
 
   return (
     <>
-      <ListItemButton onClick={handleClickOpen}>
-        <ListItemIcon>
-          <LoginIcon />
-        </ListItemIcon>
-        <ListItemText color="primary" primary="Log Out" />
-      </ListItemButton>
+      <MenuItem onClick={handleClickOpen}>
+        <Typography textAlign="center">Log Out</Typography>
+      </MenuItem>
       <Dialog
         open={open}
         onClose={handleClose}

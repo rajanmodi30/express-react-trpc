@@ -17,7 +17,7 @@ import { object, string } from "yup";
 import { Loader } from "../../components/Loader";
 import { useAuthStore } from "../../store/auth";
 import { trpc } from "../../utils/trpc";
-import { InvalidId } from "../InvalidId";
+import { InvalidId } from "../../components/InvalidId";
 
 export const EditUser = () => {
   const params = useParams();

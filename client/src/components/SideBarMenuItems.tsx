@@ -3,7 +3,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
-import { LogOut } from "../components/LogOut";
 import { Link } from "@mui/material";
 import { useLocation } from "react-router-dom";
 
@@ -34,14 +33,13 @@ export const SideBarMenuItems = () => {
   return (
     <>
       {menuItems.map((item, index) => (
-        <Link key={index} underline="none" href={item.link}>
+        <Link color="inherit" key={index} underline="none" href={item.link}>
           <ListItemButton selected={activeMenuLink === item.link}>
             <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText primary={item.name} />
           </ListItemButton>
         </Link>
       ))}
-      <LogOut />
     </>
   );
 };
