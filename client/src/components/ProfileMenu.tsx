@@ -6,7 +6,7 @@ import { LogOut } from "./LogOut";
 
 export const ProfileMenu = () => {
   const settings = [
-    { name: "Profile", link: "" },
+    { name: "Profile", link: "/admin/users/profile" },
     { name: "Change Password", link: "/admin/users/change-password" },
   ];
 
@@ -19,6 +19,7 @@ export const ProfileMenu = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
   return (
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
