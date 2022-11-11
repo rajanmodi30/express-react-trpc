@@ -12,6 +12,7 @@ import { DeviceController } from "../Device/DeviceController";
 import { UserController } from "../User/UserController";
 import bcrypt from "bcryptjs";
 import dbConnection from "../../../../providers/db";
+import { ProfileUpdateRequest } from "../../../requests/ProfileUpdateRequest";
 
 export const AuthController = trpcRouter({
   login: publicProcedure.input(LoginRequest).mutation(async ({ input }) => {
@@ -92,6 +93,25 @@ export const AuthController = trpcRouter({
       message: "Logged out",
     };
   }),
+  updateProfile: protectedProcedure
+    .input(ProfileUpdateRequest)
+    .mutation(async ({ ctx, input }) => {
+      const { user, locales } = ctx;
+      const newUserDetails = await dbConnection.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          ...input,
+        },
+      });
+
+      return {
+        status: true,
+        message: locales("user.profile_updated"),
+        data: UserResponse(newUserDetails),
+      };
+    }),
   devices: DeviceController,
   users: UserController,
 });

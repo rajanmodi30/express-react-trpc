@@ -3,6 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import { useState } from "react";
 import { Avatar, Box, Link, Menu, MenuItem, Tooltip } from "@mui/material";
 import { LogOut } from "./LogOut";
+import { useAuthStore } from "../store/auth";
 
 export const ProfileMenu = () => {
   const settings = [
@@ -10,6 +11,7 @@ export const ProfileMenu = () => {
     { name: "Change Password", link: "/admin/users/change-password" },
   ];
 
+  const { user } = useAuthStore();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -24,7 +26,7 @@ export const ProfileMenu = () => {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+          <Avatar alt={user?.fullName} src="/static/images/avatar/2.jpg" />
         </IconButton>
       </Tooltip>
       <Menu

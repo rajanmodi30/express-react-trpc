@@ -9,6 +9,7 @@ export const UserResponse = (user: User) => {
     id: user.id,
     firstName: user.firstName,
     lastName: user.lastName,
+    profilePicture: user.profilePicture,
     fullName: user.firstName + " " + user.lastName,
     email: user.email,
     createdAt: user.createdAt,

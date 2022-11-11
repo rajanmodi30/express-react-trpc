@@ -73,3 +73,7 @@ export enum EXPORT_TYPES {
   CSV = "CSV",
   PDF = "PDF",
 }
+
+export enum UPLOADS_TYPES {
+  PROFILE = "profile",
+}
