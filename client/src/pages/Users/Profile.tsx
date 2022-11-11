@@ -29,7 +29,7 @@ export const Profile = () => {
         mutate(
           {
             ...values,
-            profilePicture: "",
+            profilePicture: "www.google.com",
           },
           {
             onSuccess: (data) => {
