@@ -26,7 +26,7 @@ export const ProfileMenu = () => {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt={user?.fullName} src="/static/images/avatar/2.jpg" />
+          <Avatar alt={user?.fullName} src={user?.profilePicture ?? ""} />
         </IconButton>
       </Tooltip>
       <Menu

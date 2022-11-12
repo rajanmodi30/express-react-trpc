@@ -1,23 +1,32 @@
 import {
+  Avatar,
   Box,
   Breadcrumbs,
   Button,
   Container,
   Grid,
+  IconButton,
   Link,
   Paper,
   TextField,
   Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { useAuthStore } from "../../store/auth";
+import { UPLOADS_TYPES } from "../../utils";
 import { trpc } from "../../utils/trpc";
 
 export const Profile = () => {
   const { user, setUser } = useAuthStore();
 
+  const uploadManager = trpc.auth.upload.linkGenerate.useMutation();
+  const [selectedImage, setSelectedImage] = useState<any>(user?.profilePicture);
+  const [imageBlob, setImageBlob] = useState<any>("");
+
   const { mutate } = trpc.auth.updateProfile.useMutation();
+
   const { handleChange, handleSubmit, values, errors, touched, isSubmitting } =
     useFormik({
       initialValues: {
@@ -26,28 +35,55 @@ export const Profile = () => {
         email: user?.email || "",
       },
       onSubmit: (values, { setSubmitting }) => {
-        mutate(
+        uploadManager.mutate(
           {
-            ...values,
-            profilePicture: "www.google.com",
+            name: imageBlob.name,
+            type: imageBlob.type,
+            destination: UPLOADS_TYPES.PROFILE,
           },
           {
-            onSuccess: (data) => {
-              if (data.status) {
-                toast.success(data.message);
-                setUser(data.data);
-              } else {
-                toast.error(data.message);
+            onSuccess: async (response) => {
+              const { status, data } = response;
+              if (status) {
+                await fetch(data.url, {
+                  method: "PUT",
+                  body: imageBlob,
+                });
+                mutate(
+                  {
+                    ...values,
+                    profilePicture: data.key,
+                  },
+                  {
+                    onSuccess: (data) => {
+                      if (data.status) {
+                        toast.success(data.message);
+                        setUser(data.data);
+                      } else {
+                        toast.error(data.message);
+                      }
+                      setSubmitting(false);
+                    },
+                    onError: (error) => {
+                      console.error(error);
+                      setSubmitting(false);
+                    },
+                  }
+                );
               }
-              setSubmitting(false);
-            },
-            onError: () => {
-              setSubmitting(false);
             },
           }
         );
       },
     });
+
+  const addNewImage = (image: any) => {
+    if (image) {
+      setSelectedImage(URL.createObjectURL(image[0]));
+      setImageBlob(image[0]);
+    }
+  };
+
   return (
     <>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -74,6 +110,18 @@ export const Profile = () => {
                 onSubmit={handleSubmit}
                 sx={{ mt: 1 }}
               >
+                <Grid>
+                  <input
+                    accept="image/*"
+                    type="file"
+                    id="select-image"
+                    style={{ display: "none" }}
+                    onChange={(e) => addNewImage(e.target.files)}
+                  />
+                  <label htmlFor="select-image">
+                    <Avatar alt={user?.fullName} src={selectedImage} />
+                  </label>
+                </Grid>
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={6}>
                     <TextField

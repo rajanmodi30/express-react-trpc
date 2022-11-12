@@ -10,7 +10,7 @@ export const UploadController = trpcRouter({
     .input(UploadRequest)
     .mutation(async ({ input }) => {
       const { destination, name, type } = input;
-      const { key, url } = await GetSignedUrl(`${destination}\\${name}`, type);
+      const { key, url } = await GetSignedUrl(`${destination}/${name}`, type);
 
       return {
         status: true,

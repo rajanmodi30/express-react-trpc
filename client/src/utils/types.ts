@@ -7,6 +7,7 @@ export type User = {
   fullName: string;
   email: string;
   createdAt: Date;
+  profilePicture: string | null;
 };
 
 export interface menuItems {

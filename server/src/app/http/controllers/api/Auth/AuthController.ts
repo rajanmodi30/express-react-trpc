@@ -13,6 +13,7 @@ import { UserController } from "../User/UserController";
 import bcrypt from "bcryptjs";
 import dbConnection from "../../../../providers/db";
 import { ProfileUpdateRequest } from "../../../requests/ProfileUpdateRequest";
+import { UploadController } from "../Upload/UploadController";
 
 export const AuthController = trpcRouter({
   login: publicProcedure.input(LoginRequest).mutation(async ({ input }) => {
@@ -114,4 +115,5 @@ export const AuthController = trpcRouter({
     }),
   devices: DeviceController,
   users: UserController,
+  upload: UploadController,
 });

@@ -24,7 +24,7 @@ export const GetSignedUrl = async (
   });
 
   return {
-    key: ` https://${env.aws.bucket}.s3.${env.aws.region}.amazonaws.com/${key}`,
+    key: `https://${env.aws.bucket}.s3.${env.aws.region}.amazonaws.com/${key}`,
     url: url,
   };
 };
