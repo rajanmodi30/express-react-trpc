@@ -22,48 +22,50 @@ export const SearchAndExport = (props: SearchAndDownloadProps) => {
             .filter((value) => value !== "")
         }
       />
-      <Stack spacing={2} direction={{ xs: "column", sm: "row" }}>
-        <Button
-          variant="contained"
-          color="download"
-          onClick={() => {
-            props.handleDownloadMethod(EXPORT_TYPES.XLSX);
-          }}
-          sx={{ textTransform: "none" }}
-        >
-          Export Excel
-        </Button>
-        <Button
-          variant="contained"
-          color="download"
-          onClick={() => {
-            props.handleDownloadMethod(EXPORT_TYPES.CSV);
-          }}
-          sx={{ textTransform: "none" }}
-        >
-          Export CSV
-        </Button>
-        <Button
-          color="download"
-          variant="contained"
-          onClick={() => {
-            props.handleDownloadMethod(EXPORT_TYPES.PDF);
-          }}
-          sx={{ textTransform: "none" }}
-        >
-          Export PDF
-        </Button>
-        {props.addLink !== undefined && (
+      <Stack>
+        <Stack spacing={2} direction={{ xs: "column", sm: "row" }}>
           <Button
-            component={Link}
             variant="contained"
-            color="primary"
-            to={props.addLink}
+            color="download"
+            onClick={() => {
+              props.handleDownloadMethod(EXPORT_TYPES.XLSX);
+            }}
             sx={{ textTransform: "none" }}
           >
-            Add {props.name}
+            Export Excel
           </Button>
-        )}
+          <Button
+            variant="contained"
+            color="download"
+            onClick={() => {
+              props.handleDownloadMethod(EXPORT_TYPES.CSV);
+            }}
+            sx={{ textTransform: "none" }}
+          >
+            Export CSV
+          </Button>
+          <Button
+            color="download"
+            variant="contained"
+            onClick={() => {
+              props.handleDownloadMethod(EXPORT_TYPES.PDF);
+            }}
+            sx={{ textTransform: "none" }}
+          >
+            Export PDF
+          </Button>
+          {props.addLink !== undefined && (
+            <Button
+              component={Link}
+              variant="contained"
+              color="primary"
+              to={props.addLink}
+              sx={{ textTransform: "none" }}
+            >
+              Add {props.name}
+            </Button>
+          )}
+        </Stack>
       </Stack>
     </Stack>
   );

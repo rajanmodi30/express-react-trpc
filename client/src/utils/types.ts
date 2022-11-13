@@ -27,9 +27,11 @@ export interface AuthState {
 
 export interface ThemeState {
   defaultPerPageCount: number;
+  currentSideBarTitle: null | string;
   paginationOptions: number[];
   openToggleBar: boolean;
-  setDefaultPerPageCount: (count: number) => void;
+  setDefaultPerPageCount: (value: number) => void;
+  setCurrentSideBarTitle: (value: string) => void;
   toggleOpenBar: () => void;
 }
 
@@ -59,4 +61,11 @@ export type SearchAndDownloadProps = {
   name: string;
   addLink?: string;
   handleDownloadMethod: (exportType: EXPORT_TYPES) => void;
+};
+
+export type MenuItemsType = {
+  name: string;
+  link: string;
+  icon: JSX.Element;
+  active: boolean;
 };

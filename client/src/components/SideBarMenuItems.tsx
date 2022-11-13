@@ -5,17 +5,17 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import { Link } from "@mui/material";
 import { useLocation } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useThemeStore } from "../store/theme";
+import { MenuItemsType } from "../utils/types";
 
 export const SideBarMenuItems = () => {
-  const activeMenuLink =
-    "/" +
-    useLocation()
-      .pathname.split("/")
-      .filter((x) => x)
-      .splice(0, 2)
-      .join("/");
+  const { currentSideBarTitle, setCurrentSideBarTitle } = useThemeStore();
+  const menuLocation = useLocation();
 
-  const menuItems = [
+  const [activeMenu, setActiveMenu] = useState<MenuItemsType | null>(null);
+
+  const menuItems: MenuItemsType[] = [
     {
       name: "Dashboard",
       link: "/admin",
@@ -30,13 +30,45 @@ export const SideBarMenuItems = () => {
     },
   ];
 
+  useEffect(() => {
+    let link =
+      "/" +
+      menuLocation.pathname
+        .split("/")
+        .filter((x) => x)
+        .splice(0, 2)
+        .join("/");
+
+    const currentActiveLink = menuItems.find((menuItem) => {
+      return menuItem.link === link;
+    });
+
+    if (currentActiveLink !== undefined) {
+      setActiveMenu(currentActiveLink);
+      if (currentSideBarTitle !== currentActiveLink.name) {
+        setCurrentSideBarTitle(currentActiveLink.name);
+      }
+    }
+  }, [menuLocation]);
+
   return (
     <>
       {menuItems.map((item, index) => (
         <Link color="inherit" key={index} underline="none" href={item.link}>
-          <ListItemButton selected={activeMenuLink === item.link}>
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.name} />
+          <ListItemButton selected={activeMenu?.link === item.link}>
+            <ListItemIcon
+              style={{
+                color: activeMenu?.link === item.link ? "#ffff" : "#9da5b1",
+              }}
+            >
+              {item.icon}
+            </ListItemIcon>
+            <ListItemText
+              style={{
+                color: activeMenu?.link === item.link ? "#ffff" : "#9da5b1",
+              }}
+              primary={item.name}
+            />
           </ListItemButton>
         </Link>
       ))}

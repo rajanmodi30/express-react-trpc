@@ -1,4 +1,4 @@
-import { Divider, IconButton, List, Toolbar } from "@mui/material";
+import { Avatar, Divider, IconButton, List, Toolbar } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import { styled } from "@mui/material/styles";
 import { SideBarMenuItems } from "./SideBarMenuItems";
@@ -37,7 +37,15 @@ export const Sidebar = () => {
   }));
 
   return (
-    <Drawer variant="permanent" open={openToggleBar}>
+    <Drawer
+      PaperProps={{
+        sx: {
+          backgroundColor: "#3d0031",
+        },
+      }}
+      variant="permanent"
+      open={openToggleBar}
+    >
       <Toolbar
         sx={{
           display: "flex",
@@ -46,10 +54,12 @@ export const Sidebar = () => {
           px: [1],
         }}
       >
-        <img style={{ padding: 5 }} src={Logo} height="auto" width={80} />
-        <IconButton onClick={toggleOpenBar}>
-          <ChevronLeftIcon />
-        </IconButton>
+        <>
+          <img style={{ padding: 5 }} src={Logo} height="auto" width={80} />
+          <IconButton onClick={toggleOpenBar}>
+            <ChevronLeftIcon style={{ color: "#9da5b1" }} />
+          </IconButton>
+        </>
       </Toolbar>
       <Divider />
       <List component="nav">

@@ -6,10 +6,10 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import Badge from "@mui/material/Badge";
-import { useState } from "react";
 import { AppBarProps } from "../utils/types";
 import { useThemeStore } from "../store/theme";
 import { ProfileMenu } from "./ProfileMenu";
+import { Breadcrumbs, Divider, Link, Stack } from "@mui/material";
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -31,41 +31,63 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 export const TopBar = () => {
-  const { openToggleBar, toggleOpenBar } = useThemeStore();
+  const { openToggleBar, toggleOpenBar, currentSideBarTitle } = useThemeStore();
 
   return (
-    <AppBar position="absolute" open={openToggleBar}>
-      <Toolbar
-        sx={{
-          pr: "24px",
-        }}
-      >
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="open drawer"
-          onClick={toggleOpenBar}
+    <>
+      <AppBar color="inherit" position="absolute" open={openToggleBar}>
+        <Toolbar
           sx={{
-            marginRight: "36px",
-            ...(openToggleBar && { display: "none" }),
+            pr: "24px",
+            justifyContent: "space-between",
           }}
         >
-          <MenuIcon />
-        </IconButton>
-        <Typography
-          component="h1"
-          variant="h6"
-          color="inherit"
-          noWrap
-          sx={{ flexGrow: 1 }}
-        ></Typography>
-        {/* <IconButton color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton> */}
-        <ProfileMenu />
-      </Toolbar>
-    </AppBar>
+          <IconButton
+            edge="start"
+            aria-label="open drawer"
+            onClick={toggleOpenBar}
+            sx={{
+              marginRight: "30px",
+              color: "#9da5b1",
+              ...(openToggleBar && { display: "none" }),
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            component="h1"
+            variant="h6"
+            color="inherit"
+            noWrap
+            sx={{ flexGrow: 1 }}
+          >
+            {currentSideBarTitle}
+          </Typography>
+
+          <Stack flexDirection="row" justifyContent="space-between">
+            <IconButton color="inherit" style={{ marginRight: 15 }}>
+              <Badge badgeContent={4} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            <ProfileMenu />
+          </Stack>
+        </Toolbar>
+        <Divider />
+        <Toolbar
+          sx={{
+            justifyContent: "flex-start",
+          }}
+        >
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link underline="hover" color="inherit" href="/admin/users">
+              Users
+            </Link>
+
+            <Typography color="text.primary">Add </Typography>
+          </Breadcrumbs>
+        </Toolbar>
+      </AppBar>
+    </>
   );
 };
