@@ -1,7 +1,6 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Box,
-  Breadcrumbs,
   Button,
   Grid,
   IconButton,
@@ -88,20 +87,6 @@ export const ChangePassword = () => {
 
   return (
     <>
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Paper sx={{ display: "flex", p: 2, flexDirection: "column" }}>
-              <Breadcrumbs aria-label="breadcrumb">
-                <Link underline="hover" color="inherit" href="/admin/users">
-                  Users
-                </Link>
-                <Typography color="text.primary">Change Password</Typography>
-              </Breadcrumbs>
-            </Paper>
-          </Grid>
-        </Grid>
-      </Container>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={3}>
           <Grid item xs={12}>

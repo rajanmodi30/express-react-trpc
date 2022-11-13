@@ -7,6 +7,7 @@ export const useThemeStore = create<ThemeState>()(
     (set) => ({
       defaultPerPageCount: 15,
       currentSideBarTitle: null,
+      currentSideBarLink: null,
       openToggleBar: false,
       paginationOptions: [10, 15, 20, 30],
       toggleOpenBar: () =>
@@ -15,6 +16,8 @@ export const useThemeStore = create<ThemeState>()(
         set(() => ({ defaultPerPageCount: count })),
       setCurrentSideBarTitle: (value: string | null) =>
         set(() => ({ currentSideBarTitle: value })),
+      setCurrentSideBarLink: (value: string | null) =>
+        set(() => ({ currentSideBarLink: value })),
     }),
     {
       name: "theme",

@@ -1,5 +1,4 @@
 import {
-  Breadcrumbs,
   Button,
   Container,
   Grid,
@@ -24,30 +23,9 @@ export const EditUser = () => {
   const { user } = useAuthStore();
   const navigate = useNavigate();
 
-  const EditCard = (
-    <>
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Paper sx={{ display: "flex", p: 2, flexDirection: "column" }}>
-              <Breadcrumbs aria-label="breadcrumb">
-                <Link underline="hover" color="inherit" href="/admin/users">
-                  Users
-                </Link>
-
-                <Typography color="text.primary">Edit </Typography>
-              </Breadcrumbs>
-            </Paper>
-          </Grid>
-        </Grid>
-      </Container>
-    </>
-  );
-
   if (params.id === undefined) {
     return (
       <>
-        {EditCard}
         <InvalidId error="Invalid User Id" />
       </>
     );
@@ -127,8 +105,6 @@ export const EditUser = () => {
   if (isError) {
     return (
       <>
-        {" "}
-        {EditCard}
         <InvalidId error={error.message} />
       </>
     );
@@ -136,7 +112,6 @@ export const EditUser = () => {
 
   return (
     <>
-      {EditCard}
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={3}>
           <Grid item xs={12}>

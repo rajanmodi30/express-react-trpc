@@ -9,22 +9,22 @@ import Badge from "@mui/material/Badge";
 import { AppBarProps } from "../utils/types";
 import { useThemeStore } from "../store/theme";
 import { ProfileMenu } from "./ProfileMenu";
-import { Breadcrumbs, Divider, Link, Stack } from "@mui/material";
-const drawerWidth = 240;
+import { Divider, Stack } from "@mui/material";
+import { drawerWidth } from "../utils";
+import { BreadcrumbsToolBar } from "./Breadcrumbs";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })<AppBarProps>(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(["width", "margin"], {
+  transition: theme.transitions.create(["margin", "width"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
-    marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
+    marginLeft: `${drawerWidth}px`,
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
@@ -35,7 +35,7 @@ export const TopBar = () => {
 
   return (
     <>
-      <AppBar color="inherit" position="absolute" open={openToggleBar}>
+      <AppBar color="inherit" position="fixed" open={openToggleBar}>
         <Toolbar
           sx={{
             pr: "24px",
@@ -74,19 +74,7 @@ export const TopBar = () => {
           </Stack>
         </Toolbar>
         <Divider />
-        <Toolbar
-          sx={{
-            justifyContent: "flex-start",
-          }}
-        >
-          <Breadcrumbs aria-label="breadcrumb">
-            <Link underline="hover" color="inherit" href="/admin/users">
-              Users
-            </Link>
-
-            <Typography color="text.primary">Add </Typography>
-          </Breadcrumbs>
-        </Toolbar>
+        <BreadcrumbsToolBar />
       </AppBar>
     </>
   );

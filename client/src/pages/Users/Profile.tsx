@@ -1,15 +1,11 @@
 import {
   Avatar,
   Box,
-  Breadcrumbs,
   Button,
   Container,
   Grid,
-  IconButton,
-  Link,
   Paper,
   TextField,
-  Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
 import { useState } from "react";
@@ -86,20 +82,6 @@ export const Profile = () => {
 
   return (
     <>
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Paper sx={{ display: "flex", p: 2, flexDirection: "column" }}>
-              <Breadcrumbs aria-label="breadcrumb">
-                <Link underline="hover" color="inherit" href="/admin/users">
-                  Users
-                </Link>
-                <Typography color="text.primary">Profile </Typography>
-              </Breadcrumbs>
-            </Paper>
-          </Grid>
-        </Grid>
-      </Container>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={3}>
           <Grid item xs={12}>

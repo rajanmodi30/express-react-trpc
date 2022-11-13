@@ -28,10 +28,12 @@ export interface AuthState {
 export interface ThemeState {
   defaultPerPageCount: number;
   currentSideBarTitle: null | string;
+  currentSideBarLink: null | string;
   paginationOptions: number[];
   openToggleBar: boolean;
   setDefaultPerPageCount: (value: number) => void;
-  setCurrentSideBarTitle: (value: string) => void;
+  setCurrentSideBarTitle: (value: string | null) => void;
+  setCurrentSideBarLink: (value: string | null) => void;
   toggleOpenBar: () => void;
 }
 
@@ -67,5 +69,4 @@ export type MenuItemsType = {
   name: string;
   link: string;
   icon: JSX.Element;
-  active: boolean;
 };

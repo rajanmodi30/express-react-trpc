@@ -10,7 +10,9 @@ import { useThemeStore } from "../store/theme";
 import { MenuItemsType } from "../utils/types";
 
 export const SideBarMenuItems = () => {
-  const { currentSideBarTitle, setCurrentSideBarTitle } = useThemeStore();
+  const { currentSideBarTitle, setCurrentSideBarTitle, setCurrentSideBarLink } =
+    useThemeStore();
+
   const menuLocation = useLocation();
 
   const [activeMenu, setActiveMenu] = useState<MenuItemsType | null>(null);
@@ -20,18 +22,16 @@ export const SideBarMenuItems = () => {
       name: "Dashboard",
       link: "/admin",
       icon: <DashboardIcon />,
-      active: false,
     },
     {
       name: "Users",
       link: "/admin/users",
       icon: <PeopleIcon />,
-      active: false,
     },
   ];
 
   useEffect(() => {
-    let link =
+    const link =
       "/" +
       menuLocation.pathname
         .split("/")
@@ -47,6 +47,7 @@ export const SideBarMenuItems = () => {
       setActiveMenu(currentActiveLink);
       if (currentSideBarTitle !== currentActiveLink.name) {
         setCurrentSideBarTitle(currentActiveLink.name);
+        setCurrentSideBarLink(currentActiveLink.link);
       }
     }
   }, [menuLocation]);
