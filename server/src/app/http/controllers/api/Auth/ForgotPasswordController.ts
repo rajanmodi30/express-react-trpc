@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 import { forgotPasswordEmailQueue } from "../../../../jobs/ForgotMailSend";
 import bcrypt from "bcryptjs";
 import {
-  protectedProcedure,
   publicProcedure,
   trpcRouter,
 } from "../../../../providers/trpcProviders";
@@ -71,7 +70,7 @@ export const ForgotPasswordController = trpcRouter({
         message: locales("user.forgot_password_reset_link"),
       };
     }),
-  checkResetToken: protectedProcedure
+  checkResetToken: publicProcedure
     .input(ResetTokenRequest)
     .query(async ({ input }) => {
       const { resetToken } = input;
@@ -88,7 +87,7 @@ export const ForgotPasswordController = trpcRouter({
         });
       }
     }),
-  resetPassword: protectedProcedure
+  resetPassword: publicProcedure
     .input(ResetPasswordRequest)
     .mutation(async ({ ctx, input }) => {
       const { resetToken, password } = input;

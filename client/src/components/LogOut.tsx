@@ -5,19 +5,13 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Link, MenuItem, Typography } from "@mui/material";
+import { MenuItem, Typography } from "@mui/material";
 import { useAuthStore } from "../store/auth";
 import { trpc } from "../utils/trpc";
-import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import LoginIcon from "@mui/icons-material/Login";
 
 export const LogOut = () => {
   const navigate = useNavigate();
   const { removeAll } = useAuthStore();
-
-  const logOut = () => {
-    mutate();
-  };
 
   const { mutate, isSuccess, data } = trpc.auth.logOut.useMutation();
 
@@ -58,7 +52,12 @@ export const LogOut = () => {
 
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={logOut} autoFocus>
+          <Button
+            onClick={() => {
+              mutate();
+            }}
+            autoFocus
+          >
             Log Out
           </Button>
         </DialogActions>

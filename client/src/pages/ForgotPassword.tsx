@@ -1,4 +1,12 @@
-import { Avatar, Button, Grid, TextField, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Grid,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
@@ -35,56 +43,60 @@ export const ForgotPassword = () => {
     },
   });
   return (
-    <Box
-      sx={{
-        my: 8,
-        mx: 4,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-        <LockOutlinedIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5">
-        Forgot Password
-      </Typography>
+    <Paper sx={{ p: 4 }}>
       <Box
         component="form"
         noValidate
         onSubmit={formik.handleSubmit}
-        sx={{ mt: 1 }}
+        sx={{ maxWidth: 400 }}
       >
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          autoComplete="email"
-          autoFocus
-          onChange={formik.handleChange}
-          value={formik.values.email}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
-        />
-
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Send Reset Password Request
-        </Button>
-        <Grid container>
-          <Grid item xs>
-            <Link to="/">Login In?</Link>
+        <Grid container justifyContent="center">
+          <Stack sx={{ py: 2 }} justifyContent="center">
+            <Avatar
+              sx={{
+                bgcolor: "secondary.main",
+                alignSelf: "center",
+                mb: 1,
+              }}
+            >
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography variant="h5">Forgot Password</Typography>
+          </Stack>
+        </Grid>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={12}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              onChange={formik.handleChange}
+              value={formik.values.email}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12}>
+            <Grid container justifyContent="space-between">
+              <Link to="/" color="primary">
+                Login?
+              </Link>
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{ textTransform: "none" }}
+              >
+                Send Reset Link
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
       </Box>
-    </Box>
+    </Paper>
   );
 };

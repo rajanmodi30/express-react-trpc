@@ -173,6 +173,7 @@ export const UserController = trpcRouter({
         },
       });
 
+      //TODO find a better solution for list and download as the current code is duplicating
       if (userAlreadyExists) {
         throw new TRPCError({
           message: "User Exists",

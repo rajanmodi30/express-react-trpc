@@ -1,4 +1,4 @@
-import { CssBaseline, Grid, Paper } from "@mui/material";
+import { Container, CssBaseline, Grid, Paper } from "@mui/material";
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 import { Loader } from "../components/Loader";
@@ -8,26 +8,29 @@ export const Auth = () => {
     <>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
+
         <Grid
           item
-          xs={false}
-          sm={4}
-          md={7}
           sx={{
-            backgroundImage: "url(https://source.unsplash.com/random)",
-            backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundColor: (theme) =>
+              theme.palette.mode === "light"
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: "100vh",
+            overflow: "auto",
           }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <Suspense fallback={<Loader />}>
-            <Outlet />
-          </Suspense>
+          component={Paper}
+          elevation={6}
+          square
+        >
+          <Container maxWidth="lg" sx={{ mt: 10, mb: 4 }}>
+            <Grid container spacing={0} justifyContent="center" item xs={12}>
+              <Suspense fallback={<Loader />}>
+                <Outlet />
+              </Suspense>
+            </Grid>
+          </Container>
         </Grid>
       </Grid>
     </>
