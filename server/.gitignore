@@ -5,3 +5,4 @@ dist
 src/storage/logs/
 src/locales/*/*.missing.json
 src/storage/*.json
+.vscode
