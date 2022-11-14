@@ -7,7 +7,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Stack } from "@mui/system";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -30,27 +29,34 @@ export const AddUser = () => {
     email: "",
   };
 
-  const { handleSubmit, errors, values, isSubmitting, touched, handleChange } =
-    useFormik({
-      validationSchema: addSchema,
-      initialValues: initialValues,
-      onSubmit: async (values) => {
-        event?.preventDefault();
-        mutate(values, {
-          onSuccess: (data) => {
-            if (!data.status) {
-              toast.error(data.message);
-            } else {
-              toast.success(data.message);
-              navigate("/admin/users");
-            }
-          },
-          onError: (error) => {
-            toast.error(error.message);
-          },
-        });
-      },
-    });
+  const {
+    handleSubmit,
+    errors,
+    values,
+    isSubmitting,
+    touched,
+    handleChange,
+    resetForm,
+  } = useFormik({
+    validationSchema: addSchema,
+    initialValues: initialValues,
+    onSubmit: async (values) => {
+      event?.preventDefault();
+      mutate(values, {
+        onSuccess: (data) => {
+          if (!data.status) {
+            toast.error(data.message);
+          } else {
+            toast.success(data.message);
+            navigate("/admin/users");
+          }
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      });
+    },
+  });
 
   return (
     <>
@@ -61,8 +67,11 @@ export const AddUser = () => {
               component="form"
               noValidate
               onSubmit={handleSubmit}
-              sx={{ mt: 1, maxWidth: 500 }}
+              sx={{ maxWidth: 400 }}
             >
+              <Grid sx={{ py: 4 }} container justifyContent="center">
+                <Typography variant="h5">Add User</Typography>
+              </Grid>
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -72,7 +81,7 @@ export const AddUser = () => {
                     label="First name"
                     fullWidth
                     autoComplete="given-name"
-                    variant="standard"
+                    variant="outlined"
                     onChange={handleChange}
                     value={values.firstName}
                     error={touched.firstName && Boolean(errors.firstName)}
@@ -87,14 +96,14 @@ export const AddUser = () => {
                     label="Last name"
                     fullWidth
                     autoComplete="given-name"
-                    variant="standard"
+                    variant="outlined"
                     onChange={handleChange}
                     value={values.lastName}
                     error={touched.lastName && Boolean(errors.lastName)}
                     helperText={touched.lastName && errors.lastName}
                   />
                 </Grid>
-                <Grid item xs={12} sm={12}>
+                <Grid item xs={12}>
                   <TextField
                     required
                     id="email"
@@ -102,24 +111,36 @@ export const AddUser = () => {
                     label="Email"
                     fullWidth
                     autoComplete="email"
-                    variant="standard"
+                    variant="outlined"
                     onChange={handleChange}
                     value={values.email}
                     error={touched.email && Boolean(errors.email)}
                     helperText={touched.email && errors.email}
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <Grid container justifyContent="space-between">
+                    <Button
+                      variant="contained"
+                      color="download"
+                      onClick={() => {
+                        resetForm();
+                      }}
+                      sx={{ textTransform: "none" }}
+                    >
+                      Reset
+                    </Button>
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      variant="contained"
+                      sx={{ textTransform: "none", alignSelf: "flex-end" }}
+                    >
+                      Add
+                    </Button>
+                  </Grid>
+                </Grid>
               </Grid>
-
-              <Button
-                type="submit"
-                fullWidth
-                disabled={isSubmitting}
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Add
-              </Button>
             </Box>
           </Paper>
         </Grid>

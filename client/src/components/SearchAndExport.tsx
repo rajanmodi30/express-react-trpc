@@ -22,7 +22,7 @@ export const SearchAndExport = (props: SearchAndDownloadProps) => {
             .filter((value) => value !== "")
         }
       />
-      <Stack>
+      <Stack sx={{ py: { xs: 2 } }}>
         <Stack spacing={2} direction={{ xs: "column", sm: "row" }}>
           <Button
             variant="contained"

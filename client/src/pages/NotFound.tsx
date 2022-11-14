@@ -22,7 +22,7 @@ export const NotFound = () => {
               </Typography>
               <Button component={Link} to="/" variant="contained">
                 Go Back To Home
-              </Button>{" "}
+              </Button>
             </Grid>
             <Grid xs={6}>
               <img

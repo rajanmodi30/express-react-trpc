@@ -6,6 +6,7 @@ import { capitalizeFirstLetter } from "../utils";
 
 export const BreadcrumbsToolBar = () => {
   const menuLocation = useLocation();
+  //TODO bad implementation need to improve here
   const [breadCrumbs, setBreadCrumbs] = useState<string[]>([]);
   const { currentSideBarLink } = useThemeStore();
   useEffect(() => {
