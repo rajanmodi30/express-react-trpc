@@ -108,6 +108,7 @@ export const ForgotPasswordController = trpcRouter({
             message: locales("user.reset_same_password"),
           };
         }
+
         await dbConnection.user.update({
           where: {
             id: user.id,
@@ -118,7 +119,11 @@ export const ForgotPasswordController = trpcRouter({
           },
         });
 
-        //TODO delete all the previous devices and log out all devices
+        await dbConnection.device.deleteMany({
+          where: {
+            userId: user.id,
+          },
+        });
 
         return {
           status: true,
