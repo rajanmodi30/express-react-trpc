@@ -15,14 +15,13 @@ import { toast } from "react-toastify";
 import { useAuthStore } from "../../store/auth";
 import { UPLOADS_TYPES } from "../../utils";
 import { trpc } from "../../utils/trpc";
-import EditIcon from "@mui/icons-material/Edit";
 
 export const Profile = () => {
   const { user, setUser } = useAuthStore();
 
   const uploadManager = trpc.auth.upload.linkGenerate.useMutation();
   const [selectedImage, setSelectedImage] = useState<any>(user?.profilePicture);
-  const [imageBlob, setImageBlob] = useState<any>("");
+  const [imageBlob, setImageBlob] = useState<any>(null);
 
   const { mutate } = trpc.auth.updateProfile.useMutation();
 
@@ -40,43 +39,41 @@ export const Profile = () => {
       lastName: user?.lastName || "",
       email: user?.email || "",
     },
-    onSubmit: (values, { setSubmitting }) => {
-      uploadManager.mutate(
-        {
+    onSubmit: async (values, { setSubmitting }) => {
+      let profilePicture = user?.profilePicture;
+      if (imageBlob) {
+        const response = await uploadManager.mutateAsync({
           name: imageBlob.name,
           type: imageBlob.type,
           destination: UPLOADS_TYPES.PROFILE,
+        });
+        const { status, data } = response;
+        if (status) {
+          profilePicture = data.key;
+          await fetch(data.url, {
+            method: "PUT",
+            body: imageBlob,
+          });
+        }
+      }
+      mutate(
+        {
+          ...values,
+          profilePicture: profilePicture ?? "",
         },
         {
-          onSuccess: async (response) => {
-            const { status, data } = response;
-            if (status) {
-              await fetch(data.url, {
-                method: "PUT",
-                body: imageBlob,
-              });
-              mutate(
-                {
-                  ...values,
-                  profilePicture: data.key,
-                },
-                {
-                  onSuccess: (data) => {
-                    if (data.status) {
-                      toast.success(data.message);
-                      setUser(data.data);
-                    } else {
-                      toast.error(data.message);
-                    }
-                    setSubmitting(false);
-                  },
-                  onError: (error) => {
-                    console.error(error);
-                    setSubmitting(false);
-                  },
-                }
-              );
+          onSuccess: (data) => {
+            if (data.status) {
+              toast.success(data.message);
+              setUser(data.data);
+            } else {
+              toast.error(data.message);
             }
+            setSubmitting(false);
+          },
+          onError: (error) => {
+            console.error(error);
+            setSubmitting(false);
           },
         }
       );
