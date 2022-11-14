@@ -79,7 +79,6 @@ export const App = () => {
     }
   };
 
-  //TODO add logo in sidebar and menu in top bat for user settings and profile and also notifications
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {

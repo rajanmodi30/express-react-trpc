@@ -8,7 +8,6 @@ export const Auth = () => {
     <>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
-
         <Grid
           item
           sx={{

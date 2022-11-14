@@ -29,7 +29,7 @@ const AppBar = styled(MuiAppBar, {
     }),
   }),
 }));
-
+//TODO notifications bar
 export const TopBar = () => {
   const { openToggleBar, toggleOpenBar, currentSideBarTitle } = useThemeStore();
 
@@ -63,7 +63,6 @@ export const TopBar = () => {
           >
             {currentSideBarTitle}
           </Typography>
-
           <Stack flexDirection="row" justifyContent="space-between">
             <IconButton color="inherit" style={{ marginRight: 15 }}>
               <Badge badgeContent={4} color="secondary">
