@@ -1,6 +1,5 @@
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
-import { t } from "i18next";
 import {
   pagination,
   randomPasswordGenerator,
@@ -12,9 +11,9 @@ import {
   trpcRouter,
 } from "../../../../providers/trpcProviders";
 import { ExportRequest } from "../../../requests/ExportRequest";
+import { IdRequest } from "../../../requests/IdRequest";
 import { PaginationRequest } from "../../../requests/PaginationRequest";
 import { UpdateUserRequest } from "../../../requests/UpdateUserRequest";
-import { UserDetailsRequest } from "../../../requests/UserDetailsRequest";
 import { UserStoreRequest } from "../../../requests/UserStoreRequest";
 import {
   UserResponse,
@@ -195,29 +194,27 @@ export const UserController = trpcRouter({
         user: UserResponse(user),
       };
     }),
-  details: protectedProcedure
-    .input(UserDetailsRequest)
-    .query(async ({ input }) => {
-      const { id } = input;
+  details: protectedProcedure.input(IdRequest).query(async ({ input }) => {
+    const { id } = input;
 
-      const findUser = await dbConnection.user.findFirst({
-        where: {
-          id,
-        },
+    const findUser = await dbConnection.user.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    if (!findUser) {
+      throw new TRPCError({
+        message: "User not found",
+        code: "BAD_REQUEST",
       });
+    }
 
-      if (!findUser) {
-        throw new TRPCError({
-          message: "User not found",
-          code: "BAD_REQUEST",
-        });
-      }
-
-      return {
-        status: true,
-        data: UserResponse(findUser),
-      };
-    }),
+    return {
+      status: true,
+      data: UserResponse(findUser),
+    };
+  }),
   update: protectedProcedure
     .input(UpdateUserRequest)
     .mutation(async ({ input }) => {
@@ -253,20 +250,18 @@ export const UserController = trpcRouter({
         data: UserResponse(updatedUser),
       };
     }),
-  delete: protectedProcedure
-    .input(UserDetailsRequest)
-    .mutation(async ({ input }) => {
-      const { id } = input;
+  delete: protectedProcedure.input(IdRequest).mutation(async ({ input }) => {
+    const { id } = input;
 
-      await dbConnection.user.delete({
-        where: {
-          id,
-        },
-      });
+    await dbConnection.user.delete({
+      where: {
+        id,
+      },
+    });
 
-      return {
-        status: true,
-        message: "User Deleted",
-      };
-    }),
+    return {
+      status: true,
+      message: "User Deleted",
+    };
+  }),
 });

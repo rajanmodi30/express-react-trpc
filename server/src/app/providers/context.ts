@@ -38,11 +38,15 @@ export async function createContext({
     return i18next.t(string);
   };
 
+  const { socialType, socialToken } = req.body;
+
   return {
     bearerToken,
     resetToken,
     language,
     locales,
+    socialType,
+    socialToken,
   };
 }
 

@@ -1,16 +1,13 @@
 import { SocialTypes } from "@prisma/client";
-import { NextFunction, Request, Response } from "express";
+import { TRPCError } from "@trpc/server";
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
 import { JwksClient } from "jwks-rsa";
 import { env } from "../../../env";
+import { middleware } from "../../providers/context";
 
-export const verifySocialLogin = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const { socialType, socialToken } = req.body.validatedData;
+export const VerifySocialLogin = middleware(async ({ next, ctx }) => {
+  const { socialType, socialToken } = ctx;
 
   try {
     let auth = null;
@@ -22,15 +19,24 @@ export const verifySocialLogin = async (
       throw "Invalid Social Type";
     }
 
-    req.body.auth = auth;
-    next();
+    const configuredValues = {
+      sub: typeof auth !== "string" ? auth.sub ?? "" : "",
+      email: typeof auth !== "string" ? auth.email ?? "" : null,
+    };
+
+    return next({
+      ctx: {
+        ...ctx,
+        auth: configuredValues,
+      },
+    });
   } catch (err: any) {
-    return res.status(401).send({
-      status: false,
-      message: err?.message ?? "Invalid Token",
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Invalid Token",
     });
   }
-};
+});
 
 const verifyGoogleLogin = async (socialToken: string) => {
   const client = new OAuth2Client(env.oauth.google.clientId);
@@ -44,7 +50,6 @@ const verifyGoogleLogin = async (socialToken: string) => {
   if (typeof payload === "undefined") {
     throw "Invalid Token";
   }
-
   return payload;
 };
 

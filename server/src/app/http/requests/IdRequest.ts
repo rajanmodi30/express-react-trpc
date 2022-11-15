@@ -1,5 +1,5 @@
 import { number, object } from "yup";
 
-export const UserDetailsRequest = object({
+export const IdRequest = object({
   id: number().required(),
 });
