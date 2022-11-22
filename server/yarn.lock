@@ -424,10 +424,10 @@
   resolved "https://registry.npmjs.org/@tootallnate/once/-/once-2.0.0.tgz"
   integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
 
-"@trpc/server@^10.0.0-proxy-beta.24":
-  version "10.0.0-proxy-beta.24"
-  resolved "https://registry.yarnpkg.com/@trpc/server/-/server-10.0.0-proxy-beta.24.tgz#d5c1735c14a4ed850e32a334e659c352f12d1e50"
-  integrity sha512-//7IhD+SN5UcpVH35CGDXph6zO38FLTDI8cMn+FHrDSCecMrncmnpGuTOlw7m5Din96FJtqsxJL2yc2T94HhcQ==
+"@trpc/server@^10.0.0":
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/@trpc/server/-/server-10.0.0.tgz#6ee2332b8cbb5a3f317553b97dda90763a56adbd"
+  integrity sha512-PnSlKM3WtguEb1hryekuVlR00QOR8nbFKuZbuLbzfkLju+xOB+F3NplWW5YMVBywWdJKasX/inQDKur2SHyPfg==
 
 "@tsconfig/node10@^1.0.7":
   version "1.0.9"
