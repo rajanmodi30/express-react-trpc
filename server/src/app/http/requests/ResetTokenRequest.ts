@@ -1,4 +1,4 @@
-import { object, string } from "yup";
+import { object, string } from "zod";
 
 export const ResetTokenRequest = object({
   resetToken: string(),

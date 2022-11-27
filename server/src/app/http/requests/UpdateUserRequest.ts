@@ -1,8 +1,8 @@
-import { number, object, string } from "yup";
+import { number, object, string } from "zod";
 
 export const UpdateUserRequest = object({
-  id: number().required(),
-  firstName: string().required(),
-  lastName: string().required(),
-  email: string().required(),
+  id: number(),
+  firstName: string(),
+  lastName: string(),
+  email: string(),
 });

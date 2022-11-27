@@ -1,10 +1,17 @@
-import { number, object, string } from "yup";
+import { number, object, string } from "zod";
 import { env } from "../../../env";
 
 export const PaginationRequest = object({
-  perPage: number().required().max(env.app.pagination_limit),
-  page: number().required(),
-  sortType: string().oneOf(["asc", "desc"]).optional(),
+  perPage: number().max(env.app.pagination_limit),
+  page: number(),
+  sortType: string().optional(),
   sortBy: string().optional(),
   search: string().optional(),
+}).superRefine(({ sortType }, ctx) => {
+  if (sortType && !["asc", "desc"].includes(sortType)) {
+    ctx.addIssue({
+      code: "custom",
+      message: "The passwords did not match",
+    });
+  }
 });

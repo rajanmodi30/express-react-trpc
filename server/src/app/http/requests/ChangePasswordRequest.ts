@@ -1,17 +1,20 @@
-import { object, ref, string } from "yup";
+import { object, string } from "zod";
 
 export const ChangePasswordRequest = object({
-  oldPassword: string().required(),
-  newPassword: string()
-    .required()
-    .notOneOf(
-      [ref("oldPassword")],
-      "old password and new password cant be same"
-    ),
-  confirmNewPassword: string()
-    .required()
-    .oneOf(
-      [ref("confirmNewPassword")],
-      "confirm password and password must be same"
-    ),
+  oldPassword: string(),
+  newPassword: string(),
+  confirmNewPassword: string(),
+}).superRefine(({ oldPassword, newPassword, confirmNewPassword }, ctx) => {
+  if (confirmNewPassword !== newPassword) {
+    ctx.addIssue({
+      code: "custom",
+      message: "The passwords did not match",
+    });
+  }
+  if (oldPassword === newPassword) {
+    ctx.addIssue({
+      code: "custom",
+      message: "old password and new password cant be same",
+    });
+  }
 });

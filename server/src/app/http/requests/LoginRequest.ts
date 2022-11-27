@@ -1,9 +1,9 @@
 import { Devices } from "@prisma/client";
-import { mixed, object, string } from "yup";
+import { nativeEnum, object, string } from "zod";
 
 export const LoginRequest = object({
-  email: string().email().required(),
-  password: string().required(),
-  deviceType: mixed<Devices>().oneOf(Object.values(Devices)).required(),
+  email: string().email(),
+  password: string(),
+  deviceType: nativeEnum(Devices),
   fcmToken: string().optional(),
 });

@@ -1,8 +1,8 @@
-import { object, string } from "yup";
+import { object, string } from "zod";
 
 export const ProfileUpdateRequest = object({
-  firstName: string().required(),
-  lastName: string().required(),
-  email: string().required(),
-  profilePicture: string().required(),
+  firstName: string(),
+  lastName: string(),
+  email: string(),
+  profilePicture: string(),
 });

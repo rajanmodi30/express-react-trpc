@@ -1,15 +1,20 @@
 import { Devices } from "@prisma/client";
-import { object, ref, string } from "yup";
+import { nativeEnum, object, string } from "zod";
 
 export const SignUpRequest = object({
-  firstName: string().required(),
-  lastName: string().required(),
-  email: string().required().email(),
-  password: string().required(),
-  confirm_password: string()
-    .required()
-    .oneOf([ref("password")], "confirm password and password must be same"),
-  deviceType: string().oneOf(Object.values(Devices)).required(),
-  metaData: object(),
+  firstName: string(),
+  lastName: string(),
+  email: string().email(),
+  password: string(),
+  confirm_password: string(),
+  deviceType: nativeEnum(Devices),
+  metaData: object({}).optional(),
   fcmToken: string(),
+}).superRefine(({ password, confirm_password }, ctx) => {
+  if (password !== confirm_password) {
+    ctx.addIssue({
+      code: "custom",
+      message: "The passwords did not match",
+    });
+  }
 });

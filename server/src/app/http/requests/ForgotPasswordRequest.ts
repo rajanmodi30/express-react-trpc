@@ -1,5 +1,5 @@
-import { object, string } from "yup";
+import { object, string } from "zod";
 
 export const ForgotPasswordRequest = object({
-  email: string().required().email(),
+  email: string().email(),
 });

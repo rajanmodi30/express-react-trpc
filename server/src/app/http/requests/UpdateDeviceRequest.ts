@@ -1,6 +1,6 @@
-import { object, string } from "yup";
+import { object, string } from "zod";
 
 export const UpdateDeviceRequest = object({
   fcmToken: string(),
-  metaData: object(),
+  metaData: object({}).optional(),
 });

@@ -1,7 +1,7 @@
-import { object, string } from "yup";
+import { object, string } from "zod";
 
 export const UserStoreRequest = object({
-  firstName: string().required(),
-  lastName: string().required(),
-  email: string().email().required(),
+  firstName: string(),
+  lastName: string(),
+  email: string().email(),
 });

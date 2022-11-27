@@ -1,5 +1,5 @@
-import { number, object } from "yup";
+import { number, object } from "zod";
 
 export const IdRequest = object({
-  id: number().required(),
+  id: number(),
 });
