@@ -2,7 +2,7 @@ node_modules
 dist
 # Keep environment variables out of version control
 .env
-src/storage/logs/
+# src/storage/logs/
 src/locales/*/*.missing.json
 src/storage/*.json
 .vscode
